@@ -6,11 +6,11 @@ const fs = require('fs')
 const path = require('path')
 
 async function initDroid () {
-  protocol.ping({ host: config.host, port: config.port }, (err, pingResults) => {
+  protocol.ping({ host: config.host, port: config.port }, (err, ping) => {
     if (err) return err
-    return pingResults
-  }).then((result) => {
-    log.info(`version <${JSON.stringify(result.version)}> | ping: <${JSON.stringify(result.latency)}`)
+    return ping
+  }).then((ping) => {
+    log.info(`version <${JSON.stringify(ping.version)}> | ping: <${JSON.stringify(ping.latency)}ms>`)
     startDroid()
   }).catch((error) => {
     log.error(error)
@@ -51,17 +51,18 @@ async function bindEvents (droid) {
 
     if (event.once === true) { // if once is true then only listen for the event once
       droid.once(`chat:${event.name}`, listener)
+      log.info(`once | added chat listener <${event.name}> from ${file}`)
     } else { // else don't do that
       droid.on(`chat:${event.name}`, listener)
+      log.info(`on   | added chat listener <${event.name}> from ${file}`)
     }
-    log.info(`once: ${event.once} | added chat listener <${event.name}> from ${file}`)
 
     const chatOptions = {}
     // By default return the groups and repeat it
     chatOptions.parse = event.parse ? event.parse : true
     chatOptions.repeat = !event.once ? !event.once : true
     droid.addChatPattern(`${event.name}`, event.regex, chatOptions)
-    log.info(`added chat pattern with name: <chat:${event.name} with regex: <${event.regex}> parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}>`)
+    log.info(`name: <chat:${event.name} with parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}> regex: <${event.regex}>`)
   }
 
   for (const file of debugEvents) {
@@ -73,10 +74,11 @@ async function bindEvents (droid) {
 
     if (event.once === true) {
       droid._client.once(event.name, listener)
+      log.info(`once | added debug listener <${event.name}> from ${file}`)
     } else {
       droid._client.on(event.name, listener)
+      log.info(`on   | added debug listener <${event.name}> from ${file}`)
     }
-    log.info(`once: ${event.once} | added chat listener <${event.name}> from ${file}`)
   }
 
   for (const file of otherEvents) {
@@ -88,10 +90,11 @@ async function bindEvents (droid) {
 
     if (event.once === true) {
       droid.once(event.name, listener)
+      log.info(`once | added event listener <${event.name}> from ${file}`)
     } else {
       droid.on(event.name, listener)
+      log.info(`on   | added event listener <${event.name}> from ${file}`)
     }
-    log.info(`once: ${event.once} | added chat listener <${event.name}> from ${file}`)
   }
 }
 
