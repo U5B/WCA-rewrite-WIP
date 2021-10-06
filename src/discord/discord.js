@@ -6,11 +6,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 
 const config = require('../config/discord.json')
 
-const e = {
-  client: undefined,
-  start: undefined
-}
-e.start = async function start () {
+async function initDiscord () {
   client.commands = new Collection()
   client.slashCommands = new Collection()
 
@@ -48,8 +44,6 @@ e.start = async function start () {
     }
   })
   */
-
   client.login(process.env.discordToken)
-  e.client = client
 }
-module.exports = e
+module.exports = { client, initDiscord }
