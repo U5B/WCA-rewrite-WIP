@@ -1,23 +1,46 @@
-const config = require('../config/droid.json')
-const log = require('../util/log.js')
+module.exports = {}
 const mineflayer = require('mineflayer')
 const protocol = require('minecraft-protocol')
+const ChatMessage = require('prismarine-chat')('1.16')
 const fs = require('fs')
 const path = require('path')
 
-async function initDroid () {
-  protocol.ping({ host: config.host, port: config.port }, (err, ping) => {
-    if (err) return err
+const config = require('../config/droid.json')
+const log = require('../util/log.js')
+
+async function initDroid (start) {
+  protocol.ping({ host: config.host, port: config.port }, (error, ping) => {
+    if (error) return error
     return ping
   }).then((ping) => {
-    log.info(`version <${JSON.stringify(ping.version)}> | ping: <${JSON.stringify(ping.latency)}ms>`)
-    startDroid()
+    logPing(ping)
+    if (start === true) startDroid()
   }).catch((error) => {
     log.error(error)
+    setTimeout(() => {
+      // retry after 5m
+      // probably make this togglable in the future
+      initDroid()
+    }, 5 * 60000)
   })
 }
+async function logPing (ping) {
+  const description = new ChatMessage(ping.description)
+  const version = JSON.stringify(ping.version)
+  const players = JSON.stringify(ping.players)
+  log.info(description.toString())
+  log.info(`${version} || ${players}`)
+}
 
+let droid
 async function startDroid () {
+  droid = await createBot()
+  bindEvents(droid)
+}
+async function returnDroid () {
+  return droid
+}
+async function createBot () {
   const options = {
     username: process.env.mcEmail,
     password: process.env.mcPassword,
@@ -28,11 +51,11 @@ async function startDroid () {
     viewDistance: config.viewDistance,
     hideErrors: false
   }
-  const droid = mineflayer.createBot(options)
-  bindEvents(droid)
+  return mineflayer.createBot(options)
 }
 
-async function bindEvents (droid) {
+async function bindEvents () {
+  const droid = await returnDroid()
   // Modified from xMdb - https://github.com/xMdb/hypixel-guild-chat-bot/blob/2c01ff7c92cd6e7cce860835f9b64381a8335a1a/app.js#L92
   const chatFolder = './events/chat'
   const eventFolder = './events/other'
@@ -97,5 +120,4 @@ async function bindEvents (droid) {
     }
   }
 }
-
-module.exports = { initDroid }
+module.exports = { returnDroid, initDroid }

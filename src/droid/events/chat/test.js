@@ -6,6 +6,6 @@ module.exports = {
   once: true,
   parse: false,
   async execute () {
-    log.info('uwu\nuwu\nuwu\nuwu')
+    log.info('')
   }
 }

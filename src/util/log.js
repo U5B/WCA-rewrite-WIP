@@ -1,7 +1,6 @@
 const fs = require('fs')
 const util = require('util')
 
-const color = require('./color.js')
 const debug = {
   chat: require('debug')('chat'),
   log: require('debug')('log'),
@@ -24,7 +23,8 @@ debug.error.color = 1
 debug.warn.color = 3
 
 async function getContent (input) {
-  const text = input
+  let text = input
+  if (typeof text === 'object') text = JSON.stringify(text, null, 2)
   const time = new Date(Date.now()).toLocaleString('en-US')
   return `[${time}] ${text}`
 }
