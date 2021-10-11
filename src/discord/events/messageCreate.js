@@ -11,7 +11,7 @@ module.exports = {
 async function runCommand (message, prefix) {
   const args = message.content.slice(prefix.length).trim().split(/ +/)
   const commandName = args.shift().toLowerCase()
-  const command = client.commands.get(commandName) || client.commands.find((x) => x.aliases && x.aliases.includes(commandName))
+  const command = client.commands.get(commandName) || client.commands.find((command) => command.aliases && command.aliases.includes(commandName))
 
   if (!command) return message.channel.send({ content: 'Unknown command. Try using a slash command instead!' })
 
