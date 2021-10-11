@@ -2,7 +2,14 @@ module.exports = {
   name: 'reload',
   description: 'reload slash commands',
   type: 'CHAT_INPUT',
-  options: [],
+  options: [
+    {
+      name: 'deploy',
+      description: 'if I should deploy the discord commands or not',
+      type: 'BOOLEAN',
+      required: true
+    }
+  ],
   defaultPermission: false,
   permissions: [
     {
@@ -13,10 +20,11 @@ module.exports = {
   ],
   extra: {},
   async execute (client, interaction, args) {
-    await interaction.followUp('reloading commands')
+    const state = interaction.options.get('deploy')
+    await interaction.followUp(`reloading commands | deploy ${state}`)
     const { reloadRegularCommands, reloadSlashCommands } = require('../../deploy.js')
     await reloadRegularCommands()
-    await reloadSlashCommands()
+    if (state === true) await reloadSlashCommands()
     await interaction.editReply('commands have been reloaded')
   }
 }

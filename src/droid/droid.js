@@ -45,6 +45,7 @@ async function logPing (ping) {
 
 let droid
 async function startDroid (options) {
+  if (droid) await droid.end()
   droid = mineflayer.createBot(options)
   bindEvents(droid)
 }
