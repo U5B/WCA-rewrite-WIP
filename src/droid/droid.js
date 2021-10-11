@@ -5,16 +5,27 @@ const ChatMessage = require('prismarine-chat')('1.16')
 const fs = require('fs')
 const path = require('path')
 
-const config = require('../config/droid.json')
 const log = require('../util/log.js')
 
 async function initDroid (start) {
+  delete require.cache[require.resolve('../config/droid.json')]
+  const config = require('../config/droid.json')
+  const options = {
+    username: process.env.mcEmail,
+    password: process.env.mcPassword,
+    host: config.host,
+    port: config.port,
+    version: config.version,
+    brand: config.brand,
+    viewDistance: config.viewDistance,
+    hideErrors: false
+  }
   protocol.ping({ host: config.host, port: config.port }, (error, ping) => {
     if (error) return error
     return ping
   }).then((ping) => {
     logPing(ping)
-    if (start === true) startDroid()
+    if (start === true) startDroid(options)
   }).catch((error) => {
     log.error(error)
     setTimeout(() => {
@@ -33,25 +44,12 @@ async function logPing (ping) {
 }
 
 let droid
-async function startDroid () {
-  droid = await createBot()
+async function startDroid (options) {
+  droid = mineflayer.createBot(options)
   bindEvents(droid)
 }
 async function returnDroid () {
   return droid
-}
-async function createBot () {
-  const options = {
-    username: process.env.mcEmail,
-    password: process.env.mcPassword,
-    host: config.host,
-    port: config.port,
-    version: config.version,
-    brand: config.brand,
-    viewDistance: config.viewDistance,
-    hideErrors: false
-  }
-  return mineflayer.createBot(options)
 }
 
 async function bindEvents () {
@@ -65,6 +63,8 @@ async function bindEvents () {
   const debugEvents = fs.readdirSync(path.resolve(__dirname, debugFolder)).filter((file) => file.endsWith('.js'))
   // Iterate through each file in the folder
   for (const file of chatEvents) {
+    // nothing can go wrong if everything is reloadable muhahahahaha
+    delete require.cache[require.resolve(`${chatFolder}/${file}`)]
     // Require the file in the folder
     const event = require(`${chatFolder}/${file}`)
     const listener = async function usbEventListenerChat (...args) {
@@ -89,6 +89,7 @@ async function bindEvents () {
   }
 
   for (const file of debugEvents) {
+    delete require.cache[require.resolve(`${debugFolder}/${file}`)]
     const event = require(`${debugFolder}/${file}`)
     const listener = async function usbEventListenerDebug (...args) {
       args.unshift(droid)
@@ -105,6 +106,7 @@ async function bindEvents () {
   }
 
   for (const file of otherEvents) {
+    delete require.cache[require.resolve(`${eventFolder}/${file}`)]
     const event = require(`${eventFolder}/${file}`)
     const listener = async function usbEventListenerOther (...args) {
       args.unshift(droid)

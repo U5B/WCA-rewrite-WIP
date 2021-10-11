@@ -1,14 +1,10 @@
 const fs = require('fs')
 const path = require('path')
-const { Client, Collection, Intents } = require('discord.js')
+const { Client, Intents } = require('discord.js')
 const client = new Client({
   allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
   intents: [Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILDS]
 })
-const log = require('../util/log')
-
-client.commands = new Collection() // regular ugly commands
-client.slashCommands = new Collection() // slash commands poggers
 client.login(process.env.discordToken)
 
 async function initDiscord () {
