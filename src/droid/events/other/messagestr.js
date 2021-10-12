@@ -4,6 +4,6 @@ module.exports = {
   name: 'messagestr',
   once: false,
   async execute (droid, messagestr, messagepos, jsonmsg) {
-    log.chat(jsonmsg.toAnsi())
+    if (messagepos !== 'game_info') log.chat(jsonmsg.toAnsi())
   }
 }

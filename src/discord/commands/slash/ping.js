@@ -1,4 +1,5 @@
-const log = require('../../../util/log.js')
+const { client } = require('../../discord.js')
+
 module.exports = {
   name: 'ping',
   description: 'Replies with Pong!',
@@ -30,7 +31,7 @@ module.exports = {
   defaultPermission: false,
   permissions: [
     {
-      id: '222170304577929218',
+      id: client.application.owner.id,
       type: 'USER',
       permission: true
     }

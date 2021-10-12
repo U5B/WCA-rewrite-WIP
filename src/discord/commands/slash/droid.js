@@ -1,4 +1,5 @@
-const log = require('../../../util/log.js')
+const { client } = require('../../discord.js')
+
 module.exports = {
   name: 'droid',
   description: 'starts or stops a bot',
@@ -18,17 +19,27 @@ module.exports = {
   defaultPermission: false,
   permissions: [
     {
-      id: '222170304577929218',
+      id: client.application.owner.id,
       type: 'USER',
       permission: true
     }
   ],
   extra: {},
   async execute (client, interaction, args) {
-    if (interaction.options.getSubcommand() === 'start') {
-      interaction.followUp('started a bot')
-    } else if (interaction.options.getSubcommand() === 'stop') {
-      interaction.followUp('stopped a bot')
+    const subCommand = interaction.options.getSubcommand()
+    switch (subCommand) {
+      case 'start': {
+        interaction.followUp('started a bot')
+        break
+      }
+      case 'stop': {
+        interaction.followUp('started a bot')
+        break
+      }
+      default: {
+        interaction.followUp('how')
+        break
+      }
     }
   }
 }

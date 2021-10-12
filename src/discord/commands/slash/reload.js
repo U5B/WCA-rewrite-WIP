@@ -1,3 +1,5 @@
+const { client } = require('../../discord.js')
+
 module.exports = {
   name: 'reload',
   description: 'reload slash commands',
@@ -13,7 +15,7 @@ module.exports = {
   defaultPermission: false,
   permissions: [
     {
-      id: '222170304577929218',
+      id: client.application.owner.id,
       type: 'USER',
       permission: true
     }
@@ -21,10 +23,14 @@ module.exports = {
   extra: {},
   async execute (client, interaction, args) {
     const state = interaction.options.get('deploy')
-    await interaction.followUp(`reloading commands | deploy ${state}`)
+    await interaction.followUp(`reloading commands | deploy ${state.value}`)
     const { reloadRegularCommands, reloadSlashCommands } = require('../../deploy.js')
     await reloadRegularCommands()
-    if (state === true) await reloadSlashCommands()
+    if (state.value === true) {
+      await reloadSlashCommands(true)
+    } else {
+      await reloadSlashCommands()
+    }
     await interaction.editReply('commands have been reloaded')
   }
 }
