@@ -9,4 +9,5 @@ const e.world = {}
 // regex for joining world
 const e.world.login.string = new Regexp(`^{usernameRegex} has logged into server ${worldRegex} as an? ${classRegex}$`)
 const e.world.login.motd.green = new Regexp (`§a(?:|§a§o)${usernameRegex}§2 has logged into server §a${worldRegex}§2 as §aan? ${classRegex}`)
+const e.world.login.motd.blue = new Regexp (`§b(?:|§b§o)${usernameRegex}§3 has logged into server §b${worldRegex}§3 as §ban? ${classRegex}`)
 module.exports = e
