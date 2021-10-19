@@ -12,7 +12,6 @@
     "discord.js": "github:discordjs/discord.js",
     "dotenv": "^10.0.0",
     "mineflayer": "^3.11.2",
-    "prismarine-proxy": "^1.0.0",
     "standard": "^16.0.3"
   },
   "scripts": {
