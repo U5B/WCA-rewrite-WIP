@@ -2,9 +2,9 @@ const e = {}
 
 // These regexes ignore resets (§r) if parsing with motd
 
-const usernameRegex = '(?<username>[0-9A-Za-z_ ]{1,19})'
-const worldRegex = '(?<world>(?:WC)[0-9]{1,3})'
-const classRegex = '(?<class>Archer|Hunter|Warrior|Knight|Mage|Dark Wizard|Assassin|Ninja)'
+const usernameRegex = '(?<username>[0-9A-Za-z_ ]{1,19})' // this matches CHAMPION nicks and regular usernames
+const worldRegex = '(?<world>(?:WC)[0-9]{1,3})' // this may need to be changed if other world prefixes are introduced
+const classRegex = '(?<class>Archer|Hunter|Warrior|Knight|Mage|Dark Wizard|Assassin|Ninja)' // this may need to be changed if other classes are introduced
 const e.world = {}
 // regex for joining world
 const e.world.login.string = new Regexp(`^{usernameRegex} has logged into server ${worldRegex} as an? ${classRegex}$`)
