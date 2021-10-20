@@ -3,9 +3,8 @@ const { once } = require('events')
 
 module.exports = {
   name: 'login',
+  enabled: false,
   once: true,
   async execute (droid) {
-    await once(droid._client, 'update_time')
-    droid.chat('/locraw')
   }
 }

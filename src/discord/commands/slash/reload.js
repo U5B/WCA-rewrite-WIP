@@ -22,11 +22,11 @@ module.exports = {
   ],
   extra: {},
   async execute (client, interaction, args) {
-    const state = interaction.options.get('deploy')
+    const state = interaction.options.get('deploy').value
     delete require.cache[require.resolve('../../deploy.js')]
     const { reloadRegularCommands, reloadSlashCommands } = require('../../deploy.js')
     await reloadRegularCommands()
-    if (state.value === true) {
+    if (state === true) {
       await reloadSlashCommands(true)
     } else {
       await reloadSlashCommands()

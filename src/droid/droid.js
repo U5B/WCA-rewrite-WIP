@@ -68,11 +68,11 @@ async function bindEvents () {
     delete require.cache[require.resolve(`${chatFolder}/${file}`)]
     // Require the file in the folder
     const event = require(`${chatFolder}/${file}`)
+    if (event.enabled === false) continue
     const listener = async function usbEventListenerChat (...args) {
       args.unshift(droid)
       event.execute(...args)
     }
-
     if (event.once === true) { // if once is true then only listen for the event once
       droid.once(`chat:${event.name}`, listener)
       log.info(`once | added chat listener <${event.name}> from ${file}`)
@@ -92,6 +92,7 @@ async function bindEvents () {
   for (const file of debugEvents) {
     delete require.cache[require.resolve(`${debugFolder}/${file}`)]
     const event = require(`${debugFolder}/${file}`)
+    if (event.enabled === false) continue
     const listener = async function usbEventListenerDebug (...args) {
       args.unshift(droid)
       event.execute(...args)
@@ -109,6 +110,7 @@ async function bindEvents () {
   for (const file of otherEvents) {
     delete require.cache[require.resolve(`${eventFolder}/${file}`)]
     const event = require(`${eventFolder}/${file}`)
+    if (event.enabled === false) continue
     const listener = async function usbEventListenerOther (...args) {
       args.unshift(droid)
       event.execute(...args)

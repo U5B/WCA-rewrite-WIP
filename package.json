@@ -2,7 +2,7 @@
   "name": "wca-rewrite",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/index.js",
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
@@ -11,10 +11,13 @@
     "discord-api-types": "^0.23.1",
     "discord.js": "github:discordjs/discord.js",
     "dotenv": "^10.0.0",
-    "mineflayer": "^3.11.2",
-    "standard": "^16.0.3"
+    "mineflayer": "^github:U5B/mineflayer#bot",
+    "prismarine-chat": "github:U5B/prismarine-chat#bot",
+    "standard": "^16.0.3",
+    "xregexp": "^5.1.0"
   },
   "scripts": {
+    "start": "cd ./src/ && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
