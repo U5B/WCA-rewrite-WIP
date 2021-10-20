@@ -20,20 +20,13 @@ async function initDroid (start) {
     viewDistance: config.viewDistance,
     hideErrors: false
   }
-  protocol.ping({ host: config.host, port: config.port }, (error, ping) => {
-    if (error) return error
-    return ping
-  }).then((ping) => {
-    logPing(ping)
-    if (start === true) startDroid(options)
-  }).catch((error) => {
-    log.error(error)
-    setTimeout(() => {
-      // retry after 5m
-      // probably make this togglable in the future
-      initDroid()
-    }, 5 * 60000)
-  })
+  try {
+    // ignore await error, hasn't updated typings yet
+    const response = await protocol.ping({ host: options.host, port: options.port, version: options.version })
+    logPing(response)
+  } catch (e) {
+    log.error(e)
+  }
 }
 async function logPing (ping) {
   const description = new ChatMessage(ping.description)
