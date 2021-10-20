@@ -7,23 +7,26 @@ const path = require('path')
 
 const log = require('../util/log.js')
 
-async function initDroid (start) {
+async function initDroid (start, discordOptions) {
   delete require.cache[require.resolve('../config/droid.json')]
   const config = require('../config/droid.json')
   const options = {
     username: process.env.mcEmail,
     password: process.env.mcPassword,
-    host: config.host,
-    port: config.port,
-    version: config.version,
+    host: discordOptions.host ?? config.host,
+    port: discordOptions.port ?? config.port,
+    version: discordOptions.version ?? config.version,
     brand: config.brand,
     viewDistance: config.viewDistance,
-    hideErrors: false
+    checkTimeoutInterval: 20*1000,
+    hideErrors: false,
+    logErrors: true
   }
   try {
     // ignore await error, hasn't updated typings yet
     const response = await protocol.ping({ host: options.host, port: options.port, version: options.version })
     logPing(response)
+    if (start === true) startDroid(options)
   } catch (e) {
     log.error(e)
   }
