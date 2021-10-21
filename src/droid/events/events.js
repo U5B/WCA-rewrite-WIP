@@ -60,7 +60,7 @@ async function bindEvents (droid) {
     delete require.cache[require.resolve(`${motdFolder}/${file}`)]
     const event = require(`${motdFolder}/${file}`)
     if (event.enabled === false) continue
-    const listener = async function usbEventListenerChat (...args) {
+    const listener = async function usbEventListenerMotd (...args) {
       args.unshift(droid)
       event.execute(...args)
     }
