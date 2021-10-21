@@ -50,10 +50,6 @@ async function startDroid (options) {
   if (droid) await droid.end()
   droid = mineflayer.createBot(options)
   bindEvents(droid)
-  droid.on('motd:uwu', () => {
-    console.log('one E')
-  })
-  droid.addMotdPatternSet('uwu', [/§e(\w+) joined the game§r/, /§e(\w+) left the game§r/])
 }
 
 async function returnDroid () {
