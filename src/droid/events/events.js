@@ -15,6 +15,15 @@ async function bindEvents (droid) {
   const debugEvents = fs.readdirSync(path.resolve(__dirname, debugFolder)).filter((file) => file.endsWith('.js'))
   // Iterate through each file in the folder
   for (const file of chatEvents) {
+    /*
+      name: required (string)
+      regex: required (array)
+      execute: required (function)
+      once: optional (boolean) defaults to false
+      enabled: optional (boolean) defaults to true
+      parse: optional (boolean) defaults to true
+      matchAll: optional (boolean) defaults to false
+    */
     // nothing can go wrong if everything is reloadable muhahahahaha
     delete require.cache[require.resolve(`${chatFolder}/${file}`)]
     // Require the file in the folder
@@ -32,13 +41,16 @@ async function bindEvents (droid) {
       log.info(`on   | added chat listener <${event.name}> from ${file}`)
     }
 
-    console.log(typeof event.regex)
     const chatOptions = {}
     // By default return the groups and repeat it
     chatOptions.parse = event.parse ? event.parse : true
     chatOptions.repeat = !event.once ? !event.once : true
-    for (const pattern of event.regex) {
-      droid.addChatPattern(`${event.name}`, pattern, chatOptions)
+    if (event.matchAll === true) {
+      droid.addChatPatternSet(`${eventname}`, event.regex, chatOptions)
+    } else {
+      for (const pattern of event.regex) {
+        droid.addChatPattern(`${event.name}`, pattern, chatOptions)
+      }
     }
     log.info(`name: <chat:${event.name} with parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}> regex: <${event.regex}>`)
   }
@@ -59,7 +71,6 @@ async function bindEvents (droid) {
       droid.on(`motd:${event.name}`, listener)
       log.info(`on   | added motd listener <${event.name}> from ${file}`)
     }
-    console.log(typeof event.regex)
 
     const chatOptions = {}
     chatOptions.parse = event.parse ? event.parse : true
