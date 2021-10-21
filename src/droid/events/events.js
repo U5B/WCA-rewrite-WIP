@@ -46,7 +46,7 @@ async function bindEvents (droid) {
     chatOptions.parse = event.parse ? event.parse : true
     chatOptions.repeat = !event.once ? !event.once : true
     if (event.matchAll === true) {
-      droid.addChatPatternSet(`${eventname}`, event.regex, chatOptions)
+      droid.addChatPatternSet(`${event.name}`, event.regex, chatOptions)
     } else {
       for (const pattern of event.regex) {
         droid.addChatPattern(`${event.name}`, pattern, chatOptions)
@@ -75,8 +75,12 @@ async function bindEvents (droid) {
     const chatOptions = {}
     chatOptions.parse = event.parse ? event.parse : true
     chatOptions.repeat = !event.once ? !event.once : true
-    for (const pattern of event.regex) {
-      droid.addMotdPattern(`${event.name}`, pattern, chatOptions)
+    if (event.matchAll === true) {
+      droid.addMotdPatternSet(`${event.name}`, event.regex, chatOptions)
+    } else {
+      for (const pattern of event.regex) {
+        droid.addMotdPattern(`${event.name}`, pattern, chatOptions)
+      }
     }
     log.info(`name: <motd:${event.name} with parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}> regex: <${event.regex}>`)
   }
