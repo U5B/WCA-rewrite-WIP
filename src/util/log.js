@@ -23,10 +23,8 @@ debug.error.color = 1
 debug.warn.color = 3
 
 async function getContent (input) {
-  let text = input
-  if (typeof text === 'object') text = JSON.stringify(text, null, 2)
   const time = new Date(Date.now()).toLocaleString('en-US')
-  return `[${time}] ${text}`
+  return `[${time}] ${input}`
 }
 const log = {}
 log.log = async function (input) {

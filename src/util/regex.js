@@ -17,6 +17,6 @@ ${worldRegex}
 ${classRegex}
 $`, 'x')
 e.world.login.motd = {}
-e.world.login.motd.green = new XRegExp(`§a(?:|§a§o)${usernameRegex}§2 has logged into server §a${worldRegex}§2 as §aan? ${classRegex}`)
-e.world.login.motd.blue = new XRegExp(`§b(?:|§b§o)${usernameRegex}§3 has logged into server §b${worldRegex}§3 as §ban? ${classRegex}`)
+e.world.login.motd.green = XRegExp(`§a(?:§o)?${usernameRegex}§r§2 has logged into server §r§a${worldRegex}§r§2 as §r§aan? ${classRegex}§r`)
+e.world.login.motd.blue = XRegExp(`§b(?:§o)?${usernameRegex}§r§3 has logged into server §r§b${worldRegex}§r§3 as §r§ban? ${classRegex}§r`)
 module.exports = e

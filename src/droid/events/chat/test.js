@@ -2,10 +2,10 @@ const log = require('../../../util/log')
 
 module.exports = {
   name: 'lobbyJoin',
-  regex: /.*/,
-  once: true,
+  regex: [/(\w+) joined the game/, /(\w+) left the game/],
+  once: false,
   parse: false,
   async execute () {
-    log.info('')
+    log.info('a')
   }
 }

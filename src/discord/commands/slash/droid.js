@@ -63,16 +63,12 @@ module.exports = {
     switch (subCommand) {
       case 'start': {
         const options = {
-          host: interaction.options.get('host').value,
-          port: interaction.options.get('port').value,
-          version: interaction.options.get('version').value
+          host: interaction.options.getString('host'),
+          port: interaction.options.getInteger('port'),
+          version: interaction.options.getString('version')
         }
         interaction.editReply({ content: `started bot with host: ${options.host}; port: ${options.port}, version: ${options.version}`, ephemeral: true })
-        if (options.host === undefined && options.port === undefined && options.version === undefined) {
-          await initDroid(true)
-        } else {
-          await initDroid(true, options)
-        }
+        await initDroid(true, options)
         break
       }
       case 'stop': {
