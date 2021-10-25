@@ -20,7 +20,7 @@ Already\\ connecting\\ to\\ this\\ server!
 )$`, 'x')
 e.world.login.error.noLoginEvent = XRegExp(`^(?:
 Failed\\ to\\ send\\ you\\ to\\ target\\ server\\.\\ So\\ we're\\ sending\\ you\\ back\\.|
-Could\\ not\\ connect\\ to\\ a\\ default\\ or\\ fallback\\ server,\\ please\\ try\\ again\\ later:\\ io\\.netty\\.channel\\..*|
+Could\\ not\\ connect\\ to\\ a\\ default\\ or\\ fallback\\ server,\\ please\\ try\\ again\\ later:\\ .*|
 You\\ are\\ already\\ connected\\ to\\ this\\ server!|
 The\\ server\\ is\\ full!
 )$`, 'x')
