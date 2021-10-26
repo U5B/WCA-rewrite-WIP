@@ -1,6 +1,28 @@
 const XRegExp = require('xregexp')
 const e = {}
 
+// probably a better way to do this
+function regexMaker (array) {
+  // array = [/a/, /b/, /c/]
+  let build = '^(?:'
+  const map = new Map()
+  let i = 1
+  for (const msg of array) {
+    if (array[i]) { // only add '|' if it is not last
+      build += `{{m${i}}}|`
+    } else {
+      build += `{{m${i}}}`
+    }
+    map.set(`m${i}`, msg)
+    i++
+  }
+  build += ')$'
+  // build should look like ^(?:{{m1}}|{{m#}}|{{m#}})
+  const object = Object.fromEntries(map)
+  // object looks like { m1: /a/, m2: /b/, m3: /c/ }
+  return XRegExp.build(build, object)
+}
+
 const usernameRegex = '(?<username>[0-9A-Za-z_\\ ]{1,19})' // this matches CHAMPION nicks and regular usernames
 const worldRegex = '(?<world>(?:WC)[0-9]{1,3})' // this may need to be changed if other world prefixes are introduced
 const classRegex = '(?<class>Archer|Hunter|Warrior|Knight|Mage|Dark\\ Wizard|Assassin|Ninja)' // this may need to be changed if other classes are introduced
