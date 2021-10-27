@@ -25,36 +25,34 @@ e.world.login = {}
 e.world.login.str = XRegExp(`^${usernameRegex} has logged into server ${worldRegex} as an? ${classRegex}$`)
 e.world.login.friend = XRegExp(`^§a(?:§o)?${usernameRegex}§r§2 has logged into server §r§a${worldRegex}§r§2 as §r§aan? ${classRegex}§r$`)
 e.world.login.guild = XRegExp(`^§b(?:§o)?${usernameRegex}§r§3 has logged into server §r§b${worldRegex}§r§3 as §r§ban? ${classRegex}§r$`)
-
-e.world.login.error = {}
-
-const errorLoginEvent = {
-  msg1: /You're rejoining too quickly! Give us a moment to save your data\./,
-  msg2: /Already connecting to this server!/
-}
-e.world.login.error.loginEvent = regexCombine(errorLoginEvent)
-
-const errorNoLoginEvent = {
-  msg1: /Failed to send you to target server\. So we're sending you back\./,
-  msg2: /Could not connect to a default or fallback server, please try again later: .*/,
-  msg3: /You are already connected to this server!/,
-  msg4: /The server is full!/
-}
-e.world.login.error.noLoginEvent = regexCombine(errorNoLoginEvent)
-
-e.world.switch = XRegExp(`^Saving your player data before switching to ${worldRegex}\\.\\.\\.$`)
-
-const worldRestart = {
-  msg1: /The server is restarting in (?:1|30) (?:minute|second)s?\./,
-  msg2: /Server restarting!/
-}
-e.world.restart = regexCombine(worldRestart)
-
+e.world.restart = /The server is restarting in (?:1|30) (?:minute|second)s?\./
 const worldCrash = {
-  msg1: /The server you were previously on went down, you have been connected to a fallback server/,
-  msg2: /Server closed/,
-  msg3: /\[Proxy\] Lost connection to server\./
+  server_restart: /Server restarting!/,
+  server_crashed: /The server you were previously on went down, you have been connected to a fallback server
+  server_closed: /Server closed/,
+  proxy_disconnect: /\[Proxy\] Lost connection to server\./,
+  proxy_restart: /\[Proxy\] Proxy restarting\./
 }
 e.world.crash = regexCombine(worldCrash)
 
+e.lobby = {}
+e.lobby.switch = XRegExp(`^Saving your player data before switching to ${worldRegex}\\.\\.\\.$`)
+const serverConnectionReject = {
+  server_switch_failure: /Failed to send you to target server\. So we're sending you back\./,
+  connection_fallback: /Could not connect to a default or fallback server, please try again later: .*/,
+  connection_error: /Could not connect to target server, you have been moved to a fallback server./,
+  already_connected_server: /You are already connected to this server!/,
+  already_connected_proxy: /You are already connected to this proxy!/,
+  server_full: /The server is full!/,
+  connect_kick: /Kicked whilst connecting to .*/,
+}
+e.lobby.error.connect = regexCombine(serverConnectionError)
+
+const serverConnectionError = {
+  msg1: /You're rejoining too quickly! Give us a moment to save your data\./,
+  msg2: /Already connecting to this server!/
+}
+e.world.error.ignore = regexCombine(serverDataError)
+
 module.exports = e
+// https://github.com/SpigotMC/BungeeCord/blob/master/proxy/src/main/resources/messages.properties
