@@ -2,25 +2,17 @@ const XRegExp = require('xregexp')
 const e = {}
 
 // probably a better way to do this
-function regexMaker (array) {
-  // array = [/a/, /b/, /c/]
-  let build = '^(?:'
-  const map = new Map()
-  let i = 1
-  for (const msg of array) {
-    if (array[i]) { // only add '|' if it is not last
-      build += `{{m${i}}}|`
-    } else {
-      build += `{{m${i}}}`
-    }
-    map.set(`m${i}`, msg)
-    i++
+function regexMaker2 (object) {
+  // object = { '1': /a/, '2': /b/, '3': /c/ }
+  let build = ''
+  for (const key in object) {
+    build += `{{${key}}}|`
   }
-  build += ')$'
-  // build should look like ^(?:{{m1}}|{{m#}}|{{m#}})
-  const object = Object.fromEntries(map)
-  // object looks like { m1: /a/, m2: /b/, m3: /c/ }
+  build = build.slice(undefined,-1) // get rid of trailing '|'
+  build = `^(?:${build})$`
+  // build = ^(?:{{1}}|{{2}}|{{3}})$
   return XRegExp.build(build, object)
+  // return = ^(?:(?:a)|(?:b)|(?:c))$
 }
 
 const usernameRegex = '(?<username>[0-9A-Za-z_\\ ]{1,19})' // this matches CHAMPION nicks and regular usernames
