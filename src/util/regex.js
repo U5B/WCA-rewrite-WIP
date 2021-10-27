@@ -2,8 +2,8 @@ const XRegExp = require('xregexp')
 const e = {}
 
 // probably a better way to do this
-function regexMaker2 (object) {
-  // object = { '1': /a/, '2': /b/, '3': /c/ }
+function regexCombine (object) {
+  // object = { a: /a/, b: /b/, c: /c/ }
   let build = ''
   for (const key in object) {
     build += `{{${key}}}|`
@@ -28,28 +28,33 @@ e.world.login.guild = XRegExp(`^§b(?:§o)?${usernameRegex}§r§3 has logged int
 
 e.world.login.error = {}
 
-e.world.login.error.loginEvent = XRegExp(`^(?:
-You're\\ rejoining\\ too\\ quickly!\\ Give\\ us\\ a\\ moment\\ to\\ save\\ your\\ data\\.|
-Already\\ connecting\\ to\\ this\\ server!
-)$`, 'x')
-e.world.login.error.noLoginEvent = XRegExp(`^(?:
-Failed\\ to\\ send\\ you\\ to\\ target\\ server\\.\\ So\\ we're\\ sending\\ you\\ back\\.|
-Could\\ not\\ connect\\ to\\ a\\ default\\ or\\ fallback\\ server,\\ please\\ try\\ again\\ later:\\ .*|
-You\\ are\\ already\\ connected\\ to\\ this\\ server!|
-The\\ server\\ is\\ full!
-)$`, 'x')
+const errorLoginEvent = {
+  msg1: /You're rejoining too quickly! Give us a moment to save your data\./,
+  msg2: /Already connecting to this server!/
+}
+e.world.login.error.loginEvent = regexCombine(errorLoginEvent)
+
+const errorNoLoginEvent = {
+  msg1: /Failed to send you to target server\. So we're sending you back\./,
+  msg2: /Could not connect to a default or fallback server, please try again later: .*/,
+  msg3: /You are already connected to this server!/,
+  msg4: /The server is full!/
+}
+e.world.login.error.noLoginEvent = regexCombine(errorNoLoginEvent)
 
 e.world.switch = XRegExp(`^Saving your player data before switching to ${worldRegex}\\.\\.\\.$`)
 
-e.world.restart = XRegExp(`^(?:
-The\\ server\\ is\\ restarting\\ in\\ (?:1|30)\\ (?:minute|second)s?\\.|
-Server\\ restarting\!
-)$`, 'x')
+const worldRestart = {
+  msg1: /The server is restarting in (?:1|30) (?:minute|second)s?\./,
+  msg2: /Server restarting!/
+}
+e.world.restart = regexCombine(worldRestart)
 
-e.world.crash = XRegExp(`^(?:
-The\\ server\\ you\\ were\\ previously\\ on\\ went\\ down,\\ you\\ have\\ been\\ connected\\ to\\ a\\ fallback\\ server|
-Server\\ closed|
-\\[Proxy\\]\\ Lost\\ connection\\ to\\ server\\.
-)$`, 'x')
+const worldCrash = {
+  msg1: /The server you were previously on went down, you have been connected to a fallback server/,
+  msg2: /Server closed/,
+  msg3: /\[Proxy\] Lost connection to server\./
+}
+e.world.crash = regexCombine(worldCrash)
 
 module.exports = e
