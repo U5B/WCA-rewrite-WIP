@@ -28,7 +28,7 @@ e.world.login.guild = XRegExp(`^§b(?:§o)?${usernameRegex}§r§3 has logged int
 e.world.restart = /The server is restarting in (?:1|30) (?:minute|second)s?\./
 const worldCrash = {
   server_restart: /Server restarting!/,
-  server_crashed: /The server you were previously on went down, you have been connected to a fallback server
+  server_crashed: /The server you were previously on went down, you have been connected to a fallback server/,
   server_closed: /Server closed/,
   proxy_disconnect: /\[Proxy\] Lost connection to server\./,
   proxy_restart: /\[Proxy\] Proxy restarting\./
