@@ -9,8 +9,7 @@ async function initDroid (start, discordOptions) {
   delete require.cache[require.resolve('../config/droid.json')]
   const config = require('../config/droid.json')
   const options = {
-    username: process.env.mcEmail,
-    password: process.env.mcPassword,
+    username: process.env.mcEmail ?? process.env.mcUsername,
     host: discordOptions.host ?? config.host,
     port: discordOptions.port ?? config.port,
     version: discordOptions.version ?? config.version,
@@ -20,6 +19,9 @@ async function initDroid (start, discordOptions) {
     hideErrors: false,
     logErrors: true,
     defaultChatPatterns: false
+  }
+  if (process.env.mcEmail && process.env.mcPassword) {
+    options.password = process.env.mcPassword
   }
   let response
   try {

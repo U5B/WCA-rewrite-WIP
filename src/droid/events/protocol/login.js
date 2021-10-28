@@ -2,9 +2,10 @@ const log = require('../../../util/log.js')
 const { once } = require('events')
 
 module.exports = {
-  name: 'login',
-  enabled: false,
-  once: true,
+  name: 'physicsTick',
+  enabled: true,
+  once: false,
   async execute (droid) {
+    log.error('tick')
   }
 }
