@@ -5,6 +5,6 @@ module.exports = {
   enabled: true,
   once: false,
   async execute (droid, reason) {
-    log.error(`Kicked for: '${error}'`)
+    log.error(`[DROID] Kicked for: '${error}'`)
   }
 }
