@@ -15,17 +15,18 @@ function regexCombine (object) {
 }
 
 const regex = {}
-regex.regex = {}
-regex.regex.username = '(?<username>[0-9A-Za-z_\\ ]{1,20})' // this matches CHAMPION nicks and regular usernames
-regex.regex.world = '(?<world>(?:WC)[0-9]{1,3})' // this may need to be changed if other world prefixes are introduced
-regex.regex.class = '(?<class>Archer|Hunter|Warrior|Knight|Mage|Dark\\ Wizard|Assassin|Ninja)' // this may need to be changed if other classes are introduced
+regex.group = {}
+regex.group.uuid4 = '(?<uuid>[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12})' // matches uuid v4
+regex.group.username = '(?<username>[0-9A-Za-z_\\ ]{1,20})' // this matches CHAMPION nicks and regular usernames
+regex.group.world = '(?<world>(?:WC)[0-9]{1,3})' // this may need to be changed if other world prefixes are introduced
+regex.group.class = '(?<class>Archer|Hunter|Warrior|Knight|Mage|Dark\\ Wizard|Assassin|Ninja)' // this may need to be changed if other classes are introduced
 
 regex.world = {}
 // regex for joining world
 regex.world.login = {}
-regex.world.login.str = XRegExp(`^${regex.regex.username} has logged into server ${regex.regex.world} as an? ${regex.regex.class}$`)
-regex.world.login.friend = XRegExp(`^§a(?:§o)?${regex.regex.username}§r§2 has logged into server §r§a${regex.regex.world}§r§2 as §r§aan? ${regex.regex.class}§r$`)
-regex.world.login.guild = XRegExp(`^§b(?:§o)?${regex.regex.username}§r§3 has logged into server §r§b${regex.regex.world}§r§3 as §r§ban? ${regex.regex.class}§r$`)
+regex.world.login.str = XRegExp(`^${regex.group.username} has logged into server ${regex.group.world} as an? ${regex.group.class}$`)
+regex.world.login.friend = XRegExp(`^§a(?:§o)?${regex.group.username}§r§2 has logged into server §r§a${regex.group.world}§r§2 as §r§aan? ${regex.group.class}§r$`)
+regex.world.login.guild = XRegExp(`^§b(?:§o)?${regex.group.username}§r§3 has logged into server §r§b${regex.group.world}§r§3 as §r§ban? ${regex.group.class}§r$`)
 regex.world.restart = /The server is restarting in (?:1|30) (?:minute|second)s?\./
 
 const worldCrash = {
@@ -38,7 +39,7 @@ const worldCrash = {
 regex.world.crash = regexCombine(worldCrash)
 
 regex.lobby = {}
-regex.lobby.switch = XRegExp(`^Saving your player data before switching to ${regex.regex.world}\\.\\.\\.$`)
+regex.lobby.switch = XRegExp(`^Saving your player data before switching to ${regex.group.world}\\.\\.\\.$`)
 const serverConnectionReject = {
   server_switch_failure: /Failed to send you to target server\. So we're sending you back\./,
   connection_fallback: /Could not connect to a default or fallback server, please try again later: .*/,
