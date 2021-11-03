@@ -24,6 +24,7 @@ debug.warn.color = 3
 
 async function getContent (input) {
   const time = new Date(Date.now()).toLocaleString('en-US')
+  if (typeof input === 'object') return (`[${time}] %O`, input)
   return `[${time}] ${input}`
 }
 const log = {}

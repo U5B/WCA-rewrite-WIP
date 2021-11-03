@@ -2,6 +2,7 @@ module.exports = {}
 const mineflayer = require('mineflayer')
 const protocol = require('minecraft-protocol')
 const ChatMessage = require('prismarine-chat')('1.16')
+const constants = require('./constants.js')
 
 const log = require('../util/log.js')
 
@@ -27,7 +28,6 @@ async function initDroid (start, discordOptions) {
   try {
     // ignore await error, hasn't updated typings yet
     response = await protocol.ping({ host: options.host, port: options.port, version: options.version })
-    logPing(response)
     if (start === true) startDroid(options)
   } catch (error) {
     response = error
@@ -35,23 +35,22 @@ async function initDroid (start, discordOptions) {
   }
   return response
 }
-
-async function logPing (ping) {
-  const description = new ChatMessage(ping.description)
-  const version = JSON.stringify(ping.version)
-  const players = JSON.stringify(ping.players)
-  log.info(description.toString())
-  log.info(`${version} || ${players}`)
-}
-
 let droid
 
 async function startDroid (options) {
   delete require.cache[require.resolve('./events/events.js')]
   const { bindEvents } = require('./events/events.js')
   if (droid) await droid.end()
-  droid = mineflayer.createBot(options)
-  bindEvents(droid)
+  try {
+    log.log('[DROID] Starting droid...')
+    droid = mineflayer.createBot(options) // actually start the bot
+    log.log('[DROID] Started droid.')
+    constants.started = true
+    bindEvents(droid) // bind events
+  } catch (error) {
+    constants.started = false
+    log.error(error)
+  }
 }
 
 async function returnDroid () {

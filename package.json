@@ -12,6 +12,8 @@
     "discord.js": "github:discordjs/discord.js",
     "dotenv": "^10.0.0",
     "mineflayer": "github:U5B/mineflayer#bot",
+    "mongodb": "^4.1.3",
+    "objectmodel": "^4.3.0",
     "prismarine-chat": "github:U5B/prismarine-chat#bot",
     "standard": "^16.0.3",
     "xregexp": "^5.1.0"
