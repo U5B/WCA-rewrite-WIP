@@ -96,7 +96,7 @@ async function checkWorld (optimalWorlds, window) {
 async function fetchServerInventory (window) {
   const worlds = new Map()
   const allowed = ['lime_terracotta', 'yellow_terracotta', 'red_terracotta']
-  const items = window.slots ?? window.containerItems() // why does containerItems sometimes not exist why
+  const items = window.slots // why does containerItems sometimes not exist why
   for (const item of items) {
     if (!item) continue
     if (item.name === 'diamond_block') {

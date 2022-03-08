@@ -19,7 +19,7 @@ async function selectAClass (droid, window) {
   let classNumber = 0
   const disAllowed = ['structure_void', 'golden_shovel', 'blaze_powder', 'crafting_table']
   const allowedItems = ['bow', 'iron_shovel', 'stick', 'wooden_shovel', 'shears', 'stone_shovel']
-  for (const item of window.containerItems()) {
+  for (const item of window.slots) {
     if (!item) continue
     if (disAllowed.includes(item.name)) continue
     if (!allowedItems.includes(item.name)) continue

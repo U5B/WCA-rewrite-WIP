@@ -23,7 +23,7 @@ module.exports = {
       }
       default: {
         log.error(windowTitle)
-        log.error(window.containerItems())
+        log.error(window.slots)
         break
       }
     }

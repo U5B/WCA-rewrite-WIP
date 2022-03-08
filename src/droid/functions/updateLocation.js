@@ -44,7 +44,7 @@ async function checkInventory (droid) {
   if (droid.currentWindow) return
   const inventory = droid.inventory
   for (const item of inventory.slots) {
-    if (item === null) continue
+    if (!item) continue
     if (item.name === 'compass' && item.customName) { // Compass Check = Lobby?
       const name = await new ChatMessage(JSON.parse(item.customName)).toString().trim()
       if (name !== 'Quick Connect') continue
