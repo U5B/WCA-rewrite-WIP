@@ -1,4 +1,4 @@
-const { client } = require('../../discord.js')
+const { discord } = require('../../discord.js')
 
 module.exports = {
   name: 'reload',
@@ -15,7 +15,7 @@ module.exports = {
   defaultPermission: false,
   permissions: [
     {
-      id: client.application.owner.id,
+      id: discord.application.owner.id,
       type: 'USER',
       permission: true
     }
@@ -24,7 +24,8 @@ module.exports = {
   async execute (client, interaction, args) {
     const state = interaction.options.get('deploy').value
     delete require.cache[require.resolve('../../deploy.js')]
-    const { reloadRegularCommands, reloadSlashCommands } = require('../../deploy.js')
+    const { reloadRegularCommands, reloadSlashCommands, reloadFunctions } = require('../../deploy.js')
+    await reloadFunctions()
     await reloadRegularCommands()
     if (state === true) {
       await reloadSlashCommands(true)

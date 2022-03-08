@@ -1,10 +1,10 @@
 const log = require('../../../util/log.js')
 
 module.exports = {
-  name: 'end',
+  name: 'error',
   enabled: true,
   once: false,
-  async execute (droid, reason) {
-    await droid.wca.onEnd(reason, undefined)
+  async execute (droid, error) {
+    await log.error(error)
   }
 }

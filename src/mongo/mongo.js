@@ -1,32 +1,58 @@
-const log = require('../util/log.js')
-const format = require('./format.js')
-
 const { MongoClient } = require('mongodb')
-const client = new MongoClient(process.env.mongoUri)
+const fs = require('fs')
+const path = require('path')
 
-const dbName = 'test'
-async function connectMongo () {
+const log = require('../util/log.js')
+const verify = require('./verify.js')
+const dataSchema = require('./format/dataSchema.js')
+const discordSchema = require('./format/discordSchema.js')
+const droidSchema = require('./format/droidSchema.js')
+
+const mongo = new MongoClient(process.env.mongoUri)
+const env = mongo.db(process.env.mongoDb)
+
+async function initMongo () {
   try {
-    console.log('[MONGODB] Connecting to database.')
-    await client.connect()
-    console.log('[MONGODB] Connected to database.')
-    startup()
+    log.log('[MONGODB] Connecting to database.')
+    await mongo.connect()
+    log.log('[MONGODB] Connected to database.')
+    await startup()
   } catch (error) {
-    console.error(error)
+    await log.error(error)
+    process.exit(1)
   }
 }
+
 async function startup () {
-  const env = client.db(dbName)
   const collectionArray = await env.listCollections({}, { nameOnly: true }).toArray()
-  if (collectionArray.length === 0) return await firstTime()
+  if (collectionArray.length === 0) await firstTime()
+  await bindFunctions(mongo)
 }
+
 async function firstTime () {
-  const env = client.db(dbName)
+  const territoryCollection = await env.createCollection('territory')
+  const bombCollection = await env.createCollection('bomb')
   const discordCollection = await env.createCollection('discord')
-  discordCollection.insertOne(format.discord)
   const droidCollection = await env.createCollection('droid')
-  droidCollection.insertOne(format.droid)
-  const dataCollection = await env.createCollection('data')
-  dataCollection.insertOne(format.data)
 }
-module.exports = { connectMongo }
+
+async function bindFunctions () {
+  mongo.wca = {}
+  log.log('[MONGODB] Binding functions...')
+  const functionPath = './functions'
+  const functionFolder = fs.readdirSync(path.resolve(__dirname, functionPath)).filter((file) => file.endsWith('.js'))
+  for (const file of functionFolder) {
+    delete require.cache[require.resolve(`${functionPath}/${file}`)]
+    const fun = require(`${functionPath}/${file}`)
+    if (fun.enabled === false) continue
+    mongo.wca[`${fun.name}`] = async function wcaMongoFunction (...args) {
+      args.unshift(env)
+      args.unshift(mongo)
+      const value = await fun.execute(...args)
+      return value
+    }
+    log.info(`[MONGODB] added function client.wca.${fun.name} from ${file}`)
+  }
+}
+
+module.exports = { initMongo, mongo }

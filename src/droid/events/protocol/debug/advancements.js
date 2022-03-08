@@ -1,104 +1,158 @@
 const log = require('../../../../util/log')
 const regex = require('../../../../util/regex.js')
+const { mongo } = require('../../../../mongo/mongo.js')
 
-let territory = {}
-let previousTerritory = {}
+let territories = {}
+let previousTerritories = {}
 module.exports = {
   name: 'advancements',
   enabled: true,
   once: false,
   async execute (droid, json) {
-    if (json.advancementMapping[0].key !== 'z') return
-    if (json.reset === true) previousTerritory = territory
-    territory = {}
-    for (const uwu of json.advancementMapping) {
+    if (json.reset === false) return
+    if (json.advancementMapping[0]?.key !== 'z') return
+    log.info('[DROID] updating territories...')
+    previousTerritories = await mongo.wca.updateTerritory()
+    territories = {}
+    for await (const uwu of json.advancementMapping) {
       // don't care about anything else
       const displayData = uwu.value.displayData
       if (!displayData || displayData.flags.hidden === 1 || displayData.flags.show_toast === 1) continue // ignore toasts or hidden tags or no data
-      const title = JSON.parse(displayData.title).text
-      const description = JSON.parse(displayData.description).text
+      const title = (JSON.parse(displayData.title).text).trim() // get rid of extra whitespace
+      const description = (JSON.parse(displayData.description).text).split('\n')
       if (title === '' || description === '') continue // ignore empty strings
+      await setDefaults(title)
       await parseDescription(title, description)
-      territory[title].hq = displayData.frameType === 1 ?? false
+      territories[title].hq = displayData.frameType === 1 ?? false
+      if (territories[title].hq) await calculateProductionTrend(title)
     }
+    await mongo.wca.updateTerritory(territories)
+    droid.wca.val.territories = territories
+    log.info('[DROID] finished updating territories')
   }
 }
 
-async function parseDescription (title, description) {
-  title = title.trim() // remove extra whitespacing
-  territory[title] = {}
-  territory[title].guild = {}
-  territory[title].production = {}
-  territory[title].storage = {}
-  territory[title].storage.emes = {}
-  territory[title].storage.ores = {}
-  territory[title].storage.wood = {}
-  territory[title].storage.crop = {}
-  description = description.split('\n') // get content between newlines
+async function setDefaults (title) {
+  // defaults
+  territories[title] = {
+    name: title,
+    guild: {
+      name: 'this shouldn\'t be this',
+      tag: 'ERR'
+    },
+    production: {
+      emes: 0,
+      ores: 0,
+      wood: 0,
+      crop: 0
+    },
+    storage: {
+      emes: {
+        current: 0,
+        max: 0,
+        trend: 0
+      },
+      ores: {
+        current: 0,
+        max: 0,
+        trend: 0
+      },
+      wood: {
+        current: 0,
+        max: 0,
+        trend: 0
+      },
+      crop: {
+        current: 0,
+        max: 0,
+        trend: 0
+      }
+    },
+    treasury: 'Mythic',
+    defences: 'Mythic',
+    adjacents: [],
+    hq: false
+  }
+}
+
+async function parseDescription (title, description) { // remove extra whitespacing
   for (let text of description) {
     if (text === '') continue // ignore empty strings
     text = text.trim()
     switch (true) {
       case regex.advancements.guild.test(text): {
         const [, guildName, guildTag] = regex.advancements.guild.exec(text)
-        territory[title].guild.name = guildName
-        territory[title].guild.tag = guildTag
+        territories[title].guild.name = guildName
+        territories[title].guild.tag = guildTag
         break
       }
       case regex.advancements.production.emes.test(text): {
         const [, number] = regex.advancements.production.emes.exec(text)
-        territory[title].production.emes = number
+        territories[title].production.emes = Number(number)
         break
       }
       case regex.advancements.production.ores.test(text): {
         const [, number] = regex.advancements.production.ores.exec(text)
-        territory[title].production.ores = number
+        territories[title].production.ores = Number(number)
         break
       }
       case regex.advancements.production.wood.test(text): {
         const [, number] = regex.advancements.production.wood.exec(text)
-        territory[title].production.wood = number
+        territories[title].production.wood = Number(number)
         break
       }
       case regex.advancements.production.crop.test(text): {
         const [, number] = regex.advancements.production.crop.exec(text)
-        territory[title].production.crop = number
+        territories[title].production.crop = Number(number)
         break
       }
       case regex.advancements.storage.emes.test(text): {
         const [, current, max] = regex.advancements.storage.emes.exec(text)
-        territory[title].storage.emes.current = current
-        territory[title].storage.emes.max = max
+        territories[title].storage.emes.current = Number(current)
+        territories[title].storage.emes.max = Number(max)
         break
       }
       case regex.advancements.storage.ores.test(text): {
         const [, current, max] = regex.advancements.storage.ores.exec(text)
-        territory[title].storage.ores.current = current
-        territory[title].storage.ores.max = max
+        territories[title].storage.ores.current = Number(current)
+        territories[title].storage.ores.max = Number(max)
         break
       }
       case regex.advancements.storage.wood.test(text): {
         const [, current, max] = regex.advancements.storage.wood.exec(text)
-        territory[title].storage.wood.current = current
-        territory[title].storage.wood.max = max
+        territories[title].storage.wood.current = Number(current)
+        territories[title].storage.wood.max = Number(max)
         break
       }
       case regex.advancements.storage.crop.test(text): {
         const [, current, max] = regex.advancements.storage.crop.exec(text)
-        territory[title].storage.crop.current = current
-        territory[title].storage.crop.max = max
+        territories[title].storage.crop.current = Number(current)
+        territories[title].storage.crop.max = Number(max)
         break
       }
       case regex.advancements.treasury.test(text): {
         const [, treasury] = regex.advancements.treasury.exec(text)
-        territory[title].treasury = treasury.toString()
+        territories[title].treasury = treasury.replace(/§./g, '')
         break
       }
       case regex.advancements.defences.test(text): {
         const [, defences] = regex.advancements.defences.exec(text)
-        territory[title].defences = defences.toString()
+        territories[title].defences = defences.replace(/§./g, '')
+        break
+      }
+      case regex.advancements.adjacents.test(text): {
+        const [, adjacents] = regex.advancements.adjacents.exec(text)
+        territories[title].adjacents.push(adjacents.replace(/§./g, ''))
         break
       }
     }
   }
+}
+
+async function calculateProductionTrend (title) {
+  if (previousTerritories === false) return
+  territories[title].storage.emes.trend = territories[title].storage.emes.current - previousTerritories[title].storage.emes.current
+  territories[title].storage.ores.trend = territories[title].storage.ores.current - previousTerritories[title].storage.ores.current
+  territories[title].storage.wood.trend = territories[title].storage.wood.current - previousTerritories[title].storage.wood.current
+  territories[title].storage.crop.trend = territories[title].storage.crop.current - previousTerritories[title].storage.crop.current
 }

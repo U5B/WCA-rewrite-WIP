@@ -1,8 +1,9 @@
 require('dotenv').config({ path: './config/config.env' })
+const log = require('./util/log.js')
+const { initMongo, mongo } = require('./mongo/mongo.js')
 const { initDiscord } = require('./discord/discord.js')
-const { initMongo } = require('./mongo/mongo.js')
 async function init () {
   await initMongo()
-  initDiscord()
+  await initDiscord()
 }
 init()

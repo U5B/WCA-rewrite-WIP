@@ -1,8 +1,8 @@
 const log = require('../../util/log.js')
-const { client } = require('../discord.js')
+
 module.exports = {
   name: 'messageCreate',
-  async execute (message) {
+  async execute (client, message) {
     if (!message.guild || message.author.bot) return
     const prefix = 'uwu!'
     if (message.content.startsWith(prefix)) return runCommand(message, prefix)
@@ -11,7 +11,7 @@ module.exports = {
 async function runCommand (message, prefix) {
   const args = message.content.slice(prefix.length).trim().split(/ +/)
   const commandName = args.shift().toLowerCase()
-  const command = client.commands.get(commandName) || client.commands.find((command) => command.aliases && command.aliases.includes(commandName))
+  const command = client.wca.commands.get(commandName) || client.commands.find((command) => command.aliases && command.aliases.includes(commandName))
 
   if (!command) return message.channel.send({ content: 'Unknown command. Try using a slash command instead!' })
 

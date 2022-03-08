@@ -1,24 +1,48 @@
+const log = require('../util/log.js')
+
 const fs = require('fs')
 const path = require('path')
 const { Collection } = require('discord.js')
-const { client } = require('./discord.js')
+const { discord } = require('./discord.js')
+const { mongo } = require('../mongo/mongo.js')
+
+async function reloadFunctions () {
+  discord.wca = {}
+  // Misc Discord Functions
+  log.log('[DISCORD] Binding functions...')
+  const functionPath = './functions'
+  const functionFolder = fs.readdirSync(path.resolve(__dirname, functionPath)).filter((file) => file.endsWith('.js'))
+  for (const file of functionFolder) {
+    const fun = require(`${functionPath}/${file}`)
+    if (fun.enabled === false) continue
+    discord.wca[`${fun.name}`] = async function wcaDiscordFunction (...args) {
+      args.unshift(discord)
+      const value = await fun.execute(...args)
+      return value
+    }
+    log.info(`[DISCORD] added function client.wca.${fun.name} from ${file}`)
+  }
+}
 
 async function reloadRegularCommands () {
-  client.commands = new Collection() // regular ugly commands
+  log.info('[DISCORD] Reloading Regular Commands...')
+  discord.wca.commands = new Collection() // regular ugly commands
   const commandFolder = './commands/'
   const discordCommands = fs.readdirSync(path.resolve(__dirname, commandFolder)).filter(file => file.endsWith('.js'))
   for (const file of discordCommands) {
     // delete require cache, make discord commands reloadable
     delete require.cache[require.resolve(`${commandFolder}/${file}`)]
     const command = await require(`${commandFolder}/${file}`)
-    client.commands.set(command.name, command)
+    discord.wca.commands.set(command.name, command)
   }
+  log.info('[DISCORD] Reloaded Regular Commands.')
 }
 
 let slashCommandsArray = []
 async function reloadSlashCommands (deploy) {
+  log.info('[DISCORD] Reloading Slash Commands...')
   slashCommandsArray = []
-  client.slashCommands = new Collection()
+  discord.wca.slashCommands = new Collection()
   const commandFolder = './commands/slash'
   const discordCommands = fs.readdirSync(path.resolve(__dirname, commandFolder)).filter(file => file.endsWith('.js'))
   for (const file of discordCommands) {
@@ -26,24 +50,28 @@ async function reloadSlashCommands (deploy) {
     delete require.cache[require.resolve(`${commandFolder}/${file}`)]
     // then get the data
     const data = await require(`${commandFolder}/${file}`)
-    await client.slashCommands.set(data.name, data)
+    await discord.wca.slashCommands.set(data.name, data)
     slashCommandsArray.push(data)
   }
+  log.info('[DISCORD] Reloaded Slash Commands.')
   if (deploy === true) await deploySlashCommands()
 }
 
 async function deploySlashCommands () {
-  const guilds = client.guilds.cache.map(guild => guild.id)
+  log.info('[DISCORD] Deploying Slash Commands...')
+  const guilds = discord.guilds.cache.map(guild => guild.id)
   for (const guildId of guilds) {
     const fullPermissions = [] // why does this have to be per guild aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    const guild = client.guilds.cache.get(guildId)
-    const guildCommands = await client.application.commands.set(slashCommandsArray, guildId)
+    const guild = discord.guilds.cache.get(guildId)
+    const guildOptions = await mongo.wca.fetchDiscordOptions(guild)
+    const guildCommands = await discord.application.commands.set(slashCommandsArray, guildId)
     for (const command of guildCommands.values()) {
-      const data = await client.slashCommands.get(command.name)
-      if (!data) return await client.application.commands.delete(command.id, guildId)
+      const data = await discord.wca.slashCommands.get(command.name)
+      if (!data) return await discord.application.commands.delete(command.id, guildId)
       fullPermissions.push({ id: command.id, permissions: data.permissions })
     }
     guild.commands.permissions.set({ fullPermissions })
   }
+  log.info('[DISCORD] Deployed Slash Commands.')
 }
-module.exports = { reloadRegularCommands, reloadSlashCommands, deploySlashCommands }
+module.exports = { reloadRegularCommands, reloadSlashCommands, deploySlashCommands, reloadFunctions }

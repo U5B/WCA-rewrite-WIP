@@ -1,4 +1,4 @@
-const { client } = require('../../discord.js')
+const { discord } = require('../../discord.js')
 
 module.exports = {
   name: 'ping',
@@ -31,7 +31,7 @@ module.exports = {
   defaultPermission: false,
   permissions: [
     {
-      id: client.application.owner.id,
+      id: discord.application.owner.id,
       type: 'USER',
       permission: true
     }
