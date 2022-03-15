@@ -67,7 +67,7 @@ async function selectAServer (droid) {
       found = true
       check = false
     } else {
-      log.error('[DROID] Could not find optimal world')
+      log.error('[DROID] Could not find optimal world...')
       found = false
       check = false
     }
@@ -78,6 +78,7 @@ async function selectAServer (droid) {
     await droid.waitForTicks(10)
     droid.clickWindow(13, 0, 0)
   }
+  await droid.wca.location('reconnect')
 }
 
 async function checkWorld (optimalWorlds, window) {

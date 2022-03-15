@@ -39,6 +39,8 @@ async function initDiscord () {
   }
 
   discord.wca = {}
+  discord.wca.bombArray = []
+  discord.wca.droidRetryAttempts = 0
   await discord.application.fetch()
 
   // Discord Commands
@@ -48,6 +50,6 @@ async function initDiscord () {
   await reloadRegularCommands()
   await reloadSlashCommands(true)
 
-  discord.wca.setActivity()
+  await discord.wca.setActivity()
 }
 module.exports = { discord, initDiscord }

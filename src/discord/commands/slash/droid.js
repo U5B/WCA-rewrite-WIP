@@ -61,7 +61,7 @@ module.exports = {
           name: 'world',
           description: 'world',
           type: 'STRING',
-          required: true
+          required: false
         }
       ]
     }
@@ -86,7 +86,7 @@ module.exports = {
         }
         interaction.editReply({ content: `Starting bot with host: ${options.host}; port: ${options.port}, version: ${options.version}`, ephemeral: true })
         const response = await initDroid(true, options)
-        if (response.message) {
+        if (response.stack) {
           interaction.editReply({ content: `Startup Error: ${response.stack}`, ephemeral: true })
         } else {
           interaction.editReply({ content: `Successfully started bot with host: ${options.host}; port: ${options.port}, version: ${options.version}`, ephemeral: true })
@@ -96,22 +96,22 @@ module.exports = {
       case 'stop': {
         interaction.editReply('stopped a bot')
         const droid = await returnDroid()
-        droid.end()
+        await droid.end('wca:end')
         break
       }
       case 'say': {
-        const string = interaction.options.get('text').value
+        const string = interaction.options.get('text')?.value
         interaction.editReply(`said ${string}`)
         const droid = await returnDroid()
-        droid.chat(string)
+        await droid.chat(string)
         break
       }
       case 'lobby': {
-        const world = interaction.options.get('world').value
+        const world = interaction.options.get('world')?.value
         if (world && !worldRegex.test(world)) return
         interaction.editReply(`going to lobby: ${world}`)
         const droid = await returnDroid()
-        droid.wca.lobby(0, world)
+        await droid.wca.lobby(0, world)
         break
       }
       default: {

@@ -5,6 +5,6 @@ module.exports = {
   enabled: true,
   once: false,
   async execute (droid, error) {
-    await log.error(error)
+    throw Error(`[DROID] Internal Error: ${error}`)
   }
 }

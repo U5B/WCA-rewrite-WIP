@@ -1,8 +1,6 @@
 const ChatMessage = require('prismarine-chat')('1.16')
-const Item = require('prismarine-item')('1.16')
 
 const log = require('../../../util/log.js')
-const servers = require('../../../util/api/servers.js')
 
 module.exports = {
   name: 'windowOpen',
@@ -22,8 +20,9 @@ module.exports = {
         break
       }
       default: {
-        log.error(windowTitle)
-        log.error(window.slots)
+        log.error(`[DROID] Invalid Inventory Window: ${windowTitle}`)
+        log.error(window)
+        droid.closeWindow()
         break
       }
     }

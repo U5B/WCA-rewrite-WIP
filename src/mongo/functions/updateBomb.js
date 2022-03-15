@@ -12,10 +12,8 @@ module.exports = {
     const col = env.collection('bomb')
     let bombDb = await col.findOne({ _id: world }) // fetch world data
     if (bombDb === null) {
-      if (bombData) { // use old data
-        bombDb = bombData.bombs[world] || null
-      }
-      if (bombDb === null) {
+      if (bombData) bombDb = bombData.bombs[world] || null // use old data
+      if (bombDb === null) { // create new data
         bombDb = {
           'Combat XP': 0,
           Dungeon: 0,
@@ -27,7 +25,7 @@ module.exports = {
       bombDb._id = world
       bombDb[bomb]++
     } else {
-      // otherwise edit the existing one
+      // otherwise edit existing data
       bombDb[bomb]++
     }
     // verify document

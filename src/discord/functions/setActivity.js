@@ -1,4 +1,3 @@
-const { mongo } = require('../../mongo/mongo.js')
 const { discord } = require('../discord.js')
 const utils = require('../../util/utils.js')
 

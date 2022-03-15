@@ -1,5 +1,6 @@
 const log = require('../../util/log.js')
 const regex = require('../../util/regex.js')
+const server = require('../../util/api/servers.js')
 
 const ChatMessage = require('prismarine-chat')('1.16')
 
@@ -7,14 +8,15 @@ module.exports = {
   name: 'updateLocation',
   enabled: true,
   async execute (droid) {
-    droid.inventory.requiresConfirmation = false
     let value = false
 
     value = await checkPlayers(droid)
     if (!value) value = await checkInventory(droid)
+    return value
   }
 }
 async function checkPlayers (droid) {
+  let found = false
   /* Players to check for (prefixed with \u0000):
   \u0000101 = 'Friends'
   \u0000201 = 'Global [WC0]'
@@ -27,20 +29,22 @@ async function checkPlayers (droid) {
   for (const player of players) {
     if (player.username === '\u0000201') {
       const name = await new ChatMessage(player.displayName).toString().trim()
-      if (name) { // 'Global [WC6]'
+      if (name && regex.world.global.test(name)) { // 'Global [WC6]'
         const [, world] = regex.world.global.exec(name)
         droid.wca.val.currentWorld = world
         await droid.wca.location('world')
-      } else { // '' (class menu)
-        await droid.wca.location('class')
+        const full = await server.checkServerFull(world)
+        if (full) await droid.wca.lobby()
+        found = true
+        return
       }
-      return true
     }
   }
-  return false
+  return found
 }
 
 async function checkInventory (droid) {
+  let found = false
   if (droid.currentWindow) return
   const inventory = droid.inventory
   for (const item of inventory.slots) {
@@ -52,8 +56,9 @@ async function checkInventory (droid) {
       const slotToSelect = inventory.hotbarStart - item.slot
       await droid.setQuickBarSlot(slotToSelect)
       await droid.swingArm()
-      return true
+      found = true
+      return
     }
   }
-  return false
+  return found
 }

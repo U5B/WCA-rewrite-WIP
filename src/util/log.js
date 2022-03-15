@@ -82,7 +82,7 @@ async function getContent (input) {
     if (input.name) {
       output = `[${time}] ${input.stack}}`
     } else {
-      output = `[${time}] ${JSON.stringify(input, null, 2)}`
+      output = `[${time}] ${JSON.stringify(input, null)}`
     }
   } else {
     output = `[${time}] ${input}`
@@ -168,7 +168,7 @@ log.warn = async function (input) {
 log.error = async function (input) {
   let output = await getContent(input)
   await logToFile(output, 'error')
-  output = await addColor(output)
+  output = await addColor(output, 'error')
   debug.error(output)
 }
 

@@ -11,6 +11,7 @@ const utils = require('../../util/utils.js')
 const worldRegex = regex.regexCreate(regex.group.world)
 
 const playerCountMax = 40
+discord.wca.bombArray = []
 module.exports = {
   name: 'logBomb',
   enabled: true,
@@ -48,8 +49,7 @@ async function checkValidBomb (username, bomb, world) {
       break
     }
     default: {
-      log.error(bomb)
-      return false
+      throw Error(`[DROID] invalid bomb: ${bomb}`)
     }
   }
   if (!worldRegex.test(world)) return false
@@ -72,6 +72,7 @@ async function checkValidBomb (username, bomb, world) {
 
 async function startBombTimer (bomb, duration, messageArray, timerMessage, world) {
   let messageIdArray = await sendToMultipleServers(bomb, messageArray, timerMessage)
+  discord.wca.bombArray = messageIdArray
   const timer = new Timer()
   timer.start({ countdown: true, startValues: { minutes: duration }, target: { minutes: 0 }, precision: 'seconds' })
   timer.on('secondsUpdated', async () => {
@@ -85,6 +86,7 @@ async function startBombTimer (bomb, duration, messageArray, timerMessage, world
         const timerMessageEdit = `(**${timer.getTimeValues().toString(['minutes', 'seconds'])} left)** **[${playerCount}/${playerCountMax}]**`
         messageIdArray = await editToMultipleServers(messageIdArray, timerMessageEdit)
       }
+      discord.wca.bombArray = messageIdArray
     }
   })
 }
@@ -96,14 +98,18 @@ async function sendToMultipleServers (bomb, msg, timerMessage) {
     const guildId = option._id
     const channelId = option.channels[bomb] || option.channels.bomb
     if (!channelId) return // make sure you have a channel to send to lol
-    let roleId = option.roles[bomb] || option.roles.bomb
-    if (!roleId) {
-      roleId = `[${bomb}]`
+    const roleId = option.roles[bomb]
+    const fallbackRoleId = option.roles.bomb
+    let roleName = `[${bomb}]`
+    if (roleId) {
+      roleName = `<@&${roleId}>`
+    } else if (fallbackRoleId) {
+      roleName = `<@&${fallbackRoleId}> [${bomb}]`
     } else {
-      roleId = `<@&${roleId}>`
+      roleName = `[${bomb}]`
     }
     const bombEmoji = option.emojis[bomb] || option.emojis.bomb || ''
-    const message = `${msg[0]} ${bombEmoji} ${roleId} ${msg[1]}`
+    const message = `${msg[0]} ${bombEmoji} ${roleName} ${msg[1]}`
     const channel = discord.guilds.cache.get(`${guildId}`).channels.cache.get(`${channelId}`)
     if (channel) {
       const msgId = await channel.send(`${message} ${timerMessage}`)

@@ -24,7 +24,13 @@ async function bindEvents (droid) {
     if (event.enabled === false) continue
     const listener = async function wcaDroidEvents (...args) {
       args.unshift(droid)
-      const value = await event.execute(...args)
+      let value
+      try {
+        value = await event.execute(...args)
+      } catch (e) {
+        log.error(e)
+        value = e
+      }
       return value
     }
     if (event.once === true) {
@@ -43,7 +49,13 @@ async function bindEvents (droid) {
     if (event.enabled === false) continue
     const listener = async function wcaDroidEvents (...args) {
       args.unshift(droid)
-      const value = await event.execute(...args)
+      let value
+      try {
+        value = await event.execute(...args)
+      } catch (e) {
+        log.error(e)
+        value = e
+      }
       return value
     }
     if (event.once === true) {
@@ -55,81 +67,6 @@ async function bindEvents (droid) {
     }
   }
 
-  // (droid.on('chat:name'))
-  for (const file of chatFolder) {
-    /*
-      name: required (string)
-      regex: required (array)
-      execute: required (function)
-      once: optional (boolean) defaults to false
-      enabled: optional (boolean) defaults to true
-      parse: optional (boolean) defaults to true
-      matchAll: optional (boolean) defaults to false
-    */
-    // nothing can go wrong if everything is reloadable muhahahahaha
-    delete require.cache[require.resolve(`${chatPath}/${file}`)]
-    // Require the file in the folder
-    const event = require(`${chatPath}/${file}`)
-    if (event.enabled === false) continue
-    const listener = async function wcaDroidEvents (...args) {
-      args.unshift(droid)
-      const value = await event.execute(...args)
-      return value
-    }
-    if (event.once === true) { // if once is true then only listen for the event once
-      droid.once(`chat:${event.name}`, listener)
-      log.info(`[DROID] once | added chat listener <${event.name}> from ${file}`)
-    } else { // else don't do that
-      droid.on(`chat:${event.name}`, listener)
-      log.info(`[DROID] on   | added chat listener <${event.name}> from ${file}`)
-    }
-
-    const chatOptions = {}
-    // By default return the groups and repeat it
-    chatOptions.parse = event.parse ? event.parse : true
-    chatOptions.repeat = !event.once ? !event.once : true
-    console.log(typeof event.regex)
-    if (event.matchAll === true) {
-      droid.addChatPatternSet(`${event.name}`, event.regex, chatOptions)
-    } else {
-      for (const pattern of event.regex) {
-        droid.addChatPattern(`${event.name}`, pattern, chatOptions)
-      }
-    }
-    log.info(`[DROID] name: <chat:${event.name} with parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}> regex: <${event.regex}>`)
-  }
-
-  // // (droid.on('motd:name'))
-  for (const file of motdFolder) {
-    delete require.cache[require.resolve(`${motdPath}/${file}`)]
-    const event = require(`${motdPath}/${file}`)
-    if (event.enabled === false) continue
-    const listener = async function wcaDroidEvents (...args) {
-      args.unshift(droid)
-      const value = await event.execute(...args)
-      return value
-    }
-    if (event.once === true) {
-      droid.once(`motd:${event.name}`, listener)
-      log.info(`[DROID] once | added motd listener <${event.name}> from ${file}`)
-    } else { // else don't do that
-      droid.on(`motd:${event.name}`, listener)
-      log.info(`[DROID] on   | added motd listener <${event.name}> from ${file}`)
-    }
-
-    const chatOptions = {}
-    chatOptions.parse = event.parse ? event.parse : true
-    chatOptions.repeat = !event.once ? !event.once : true
-    if (event.matchAll === true) {
-      droid.addMotdPatternSet(`${event.name}`, event.regex, chatOptions)
-    } else {
-      for (const pattern of event.regex) {
-        droid.addMotdPattern(`${event.name}`, pattern, chatOptions)
-      }
-    }
-    log.info(`[DROID] name: <motd:${event.name} with parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}> regex: <${event.regex}>`)
-  }
-
   // (droid.on('wca:name'))
   for (const folder of wcaFolder) {
     const files = fs.readdirSync(path.resolve(__dirname, `${wcaPath}/${folder}`)).filter((file) => file.endsWith('.js'))
@@ -139,7 +76,13 @@ async function bindEvents (droid) {
       if (event.enabled === false) continue
       const listener = async function wcaDroidEvents (...args) {
         args.unshift(droid)
-        const value = await event.execute(...args)
+        let value
+        try {
+          value = await event.execute(...args)
+        } catch (e) {
+          log.error(e)
+          value = e
+        }
         return value
       }
       if (event.once === true) {
@@ -151,6 +94,103 @@ async function bindEvents (droid) {
       }
     }
   }
+
+  // chat folders and parsing
+  let strRegexArray = []
+  let motdRegexArray = []
+  // (droid.on('chat:name'))
+  for (const file of chatFolder) {
+  /*
+    name: required (string)
+    regex: required (array)
+    execute: required (function)
+    once: optional (boolean) defaults to false
+    enabled: optional (boolean) defaults to true
+    parse: optional (boolean) defaults to true
+    matchAll: optional (boolean) defaults to false
+  */
+    // nothing can go wrong if everything is reloadable muhahahahaha
+    delete require.cache[require.resolve(`${chatPath}/${file}`)]
+    // Require the file in the folder
+    const event = require(`${chatPath}/${file}`)
+    if (event.enabled === false) continue
+    const listener = async function wcaDroidEvents (...args) {
+      args.unshift(droid)
+      let value
+      try {
+        value = await event.execute(...args)
+      } catch (e) {
+        log.error(e)
+        value = e
+      }
+      return value
+    }
+    if (event.once === true) { // if once is true then only listen for the event once
+      droid.once(`chat:${event.name}`, listener)
+      log.info(`[DROID] once | added chat listener <${event.name}> from ${file}`)
+    } else { // else don't do that
+      droid.on(`chat:${event.name}`, listener)
+      log.info(`[DROID] on   | added chat listener <${event.name}> from ${file}`)
+    }
+
+    strRegexArray.push({ name: event.name, regex: event.regex, parse: event.parse, once: event.once })
+    log.info(`[DROID] chat | <chat:${event.name}> | regex: <${event.regex}>`)
+  }
+
+  // // (droid.on('motd:name'))
+  for (const file of motdFolder) {
+    delete require.cache[require.resolve(`${motdPath}/${file}`)]
+    const event = require(`${motdPath}/${file}`)
+    if (event.enabled === false) continue
+    const listener = async function wcaDroidEvents (...args) {
+      args.unshift(droid)
+      let value
+      try {
+        value = await event.execute(...args)
+      } catch (e) {
+        log.error(e)
+        value = e
+      }
+      return value
+    }
+    if (event.once === true) {
+      droid.once(`motd:${event.name}`, listener)
+      log.info(`[DROID] once | added motd listener <${event.name}> from ${file}`)
+    } else { // else don't do that
+      droid.on(`motd:${event.name}`, listener)
+      log.info(`[DROID] on   | added motd listener <${event.name}> from ${file}`)
+    }
+    motdRegexArray.push({ name: event.name, regex: event.regex, parse: event.parse, once: event.once })
+    log.info(`[DROID] motd | <motd:${event.name}> | regex: <${event.regex}>`)
+  }
+
+  // chat
+  droid.on('messagestr', async (message, pos, raw) => {
+    for (const strRegex of strRegexArray) {
+      if (strRegex.regex.test(message)) {
+        let matches = message
+        if (strRegex.parse) matches = strRegex.regex.exec(message)
+        droid.emit(`chat:${strRegex.name}`, matches, raw)
+        if (strRegex.once) strRegexArray = strRegexArray.filter(value => value !== strRegex)
+        break
+      } else {
+        continue
+      }
+    }
+  })
+  droid.on('messagemotd', async (message, pos, raw) => {
+    for (const motdRegex of motdRegexArray) {
+      if (motdRegex.regex.test(message)) {
+        let matches = message
+        if (motdRegex.parse) matches = motdRegex.regex.exec(message)
+        droid.emit(`motd:${motdRegex.name}`, matches, raw)
+        if (motdRegex.once) motdRegexArray = motdRegexArray.filter(value => value !== motdRegex)
+        break
+      } else {
+        continue
+      }
+    }
+  })
   log.log('[DROID] Binded events.')
 }
 module.exports = { bindEvents }

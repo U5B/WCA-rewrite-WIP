@@ -1,7 +1,6 @@
 module.exports = {}
 const mineflayer = require('mineflayer')
 const protocol = require('minecraft-protocol')
-const ChatMessage = require('prismarine-chat')('1.16')
 const fs = require('fs')
 const path = require('path')
 
@@ -9,34 +8,24 @@ const { mongo } = require('../mongo/mongo.js')
 const log = require('../util/log.js')
 const utils = require('../util/utils.js')
 const { discord } = require('../discord/discord.js')
-const regex = require('../util/regex.js')
 
-async function initDroid (start, discordOptions) {
+let previousOptions
+async function initDroid (start, options) {
   const config = await mongo.wca.fetchDroidOptions()
-  const options = {
-    username: process.env.mcEmail ?? process.env.mcUsername,
-    host: discordOptions.host ?? config.host,
-    port: discordOptions.port ?? config.port,
-    version: discordOptions.version ?? config.version,
-    brand: 'vanilla',
-    viewDistance: 2,
-    checkTimeoutInterval: 20 * 1000,
-    hideErrors: false,
-    logErrors: true,
-    defaultChatPatterns: false
-  }
-  if (process.env.mcEmail && process.env.mcPassword) {
-    options.password = process.env.mcPassword
-  }
+  if (!options) options = previousOptions
+  options = await utils.compareObjects(options, config)
+  const mineflayerOptions = options
+  previousOptions = options
+
   let response
   try {
     // ignore await error, hasn't updated typings yet
-    log.info(`[DROID] pinging server ${options.host}:${options.port} on ${options.version}`)
-    response = await protocol.ping({ host: options.host, port: options.port, version: options.version })
-    if (start === true) startDroid(options)
+    log.info(`[DROID] pinging server ${mineflayerOptions.host}:${mineflayerOptions.port} on ${mineflayerOptions.version}`)
+    response = await protocol.ping({ host: mineflayerOptions.host, port: mineflayerOptions.port, version: mineflayerOptions.version })
+    if (start === true) startDroid(mineflayerOptions)
   } catch (error) {
     response = error
-    log.error(`[DROID] failed to ping server ${options.host}:${options.port} on ${options.version}`)
+    log.error(`[DROID] failed to ping server ${mineflayerOptions.host}:${mineflayerOptions.port} on ${mineflayerOptions.version}`)
     log.error(error)
   }
   return response
@@ -46,20 +35,22 @@ let droid
 async function startDroid (options) {
   delete require.cache[require.resolve('./events/events.js')]
   const { bindEvents } = require('./events/events.js')
-  if (droid) await droid.end()
+  if (droid) await droid.end('wca:end')
   try {
     log.log('[DROID] Starting droid...')
     droid = mineflayer.createBot(options) // actually start the bot
+    // await once(droid, 'inject_allowed')
+
     droid.wca = {}
     log.log('[DROID] Started droid.')
     await bindVariables(droid)
     await bindFunctions(droid)
     await bindEvents(droid) // bind events
-    // await discord.wca.sendStatus('firstConnect')
+    await discord.wca.sendStatus('start')
   } catch (error) {
     log.error('[DROID] Error when starting...')
     log.error(error)
-    droid.end('error')
+    return error
   }
 }
 
@@ -67,6 +58,8 @@ async function returnDroid () {
   return droid
 }
 async function bindVariables (droid) {
+  droid.inventory.requiresConfirmation = false
+
   droid.wca.val = {}
   droid.wca.val.territories = {}
   droid.wca.val.currentWorld = 'WC0'

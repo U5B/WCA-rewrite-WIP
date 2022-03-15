@@ -11,7 +11,6 @@ module.exports = {
   async execute (droid, bossBar) {
     const string = bossBar.title.toString().trim()
     if (bombRegex.test(string)) {
-      log.warn('[DROID] Lobby: bomb on bossbar')
       const [, , , duration] = bombRegex.exec(string)
       await droid.wca.lobby(duration)
     }

@@ -7,7 +7,6 @@ const { discord } = require('./discord.js')
 const { mongo } = require('../mongo/mongo.js')
 
 async function reloadFunctions () {
-  discord.wca = {}
   // Misc Discord Functions
   log.log('[DISCORD] Binding functions...')
   const functionPath = './functions'
@@ -63,7 +62,7 @@ async function deploySlashCommands () {
   for (const guildId of guilds) {
     const fullPermissions = [] // why does this have to be per guild aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const guild = discord.guilds.cache.get(guildId)
-    const guildOptions = await mongo.wca.fetchDiscordOptions(guild)
+    await mongo.wca.fetchDiscordOptions(guild)
     const guildCommands = await discord.application.commands.set(slashCommandsArray, guildId)
     for (const command of guildCommands.values()) {
       const data = await discord.wca.slashCommands.get(command.name)

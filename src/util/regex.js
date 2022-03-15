@@ -63,12 +63,13 @@ regex.world.restart = /The world will restart in (?:1 minute|(?:30|20|10|5|4|3|2
 regex.world.global = XRegExp(`Global \\[${regex.group.world}\\]`)
 regex.world.crash = regex.regexCombine(worldCrash)
 
-regex.lobby = {}
-regex.lobby.switch = XRegExp(`^Saving your player data before switching to ${regex.group.world}\\.\\.\\.$`)
-
 regex.world.error = {}
 regex.world.error.connect = regex.regexCombine(serverConnectionReject)
 regex.world.error.ignore = regex.regexCombine(serverConnectionError)
+
+regex.lobby = {}
+regex.lobby.switch = XRegExp(`^Saving your player data before switching to ${regex.group.world}\\.\\.\\.$`)
+regex.lobby.rank = /You must have a HERO rank or higher to use this feature. Get one at wynncraft.com\/store/
 
 // Kick Messages that are safe to restart from
 regex.kick = {}
@@ -112,9 +113,12 @@ regex.selectAClass.soul = /^- Soul Points: \d{1,2}$/
 regex.selectAClass.quests = /^- Finished Quests: \d{1,3}\/\d{1,3}$/
 
 regex.bomb = {}
-regex.bomb.bell = XRegExp(`§e\\[Bomb Bell\\] §r§f(?:§o)(${regex.group.nickname})(?:§r§f) §r§7has thrown (?:a|an) §r§f(${regex.group.bomb}) Bomb §r§7on §r§f(${regex.group.world})§r`)
+regex.bomb.bell = XRegExp(`§e\\[Bomb Bell\\] §r§f(?:§o)?${regex.group.nickname}(?:§r§f)? §r§7has thrown (?:a|an) §r§f${regex.group.bomb} Bomb §r§7on §r§f${regex.group.world}§r`)
 // bomb.thrown might need to be fixed for nicks
-regex.bomb.thrown = XRegExp(`§b(?:§o)(${regex.group.username})§r§3 has thrown (?:a|an) §r§b(${regex.group.bomb}) Bomb§r§3!.*`)
+regex.bomb.thrown = XRegExp(`§b(?:§o)?${regex.group.nickname}§r§3 has thrown (?:a|an) §r§b${regex.group.bomb} Bomb§r§3!.*`)
 regex.bomb.bossBar = /(.+?) from (.+?) \[(\d+) min\]/
+
+regex.chat = {}
+regex.chat.shout = XRegExp(`§3${regex.group.username} \\[${regex.group.world}\\] shouts: §r§b(.+)§r`)
 
 module.exports = regex

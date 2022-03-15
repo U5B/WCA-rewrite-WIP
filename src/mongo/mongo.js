@@ -19,7 +19,6 @@ async function initMongo () {
     await startup()
   } catch (error) {
     await log.error(error)
-    process.exit(1)
   }
 }
 
@@ -30,10 +29,10 @@ async function startup () {
 }
 
 async function firstTime () {
-  const territoryCollection = await env.createCollection('territory')
-  const bombCollection = await env.createCollection('bomb')
-  const discordCollection = await env.createCollection('discord')
-  const droidCollection = await env.createCollection('droid')
+  await env.createCollection('territory')
+  await env.createCollection('bomb')
+  await env.createCollection('discord')
+  await env.createCollection('droid')
 }
 
 async function bindFunctions () {

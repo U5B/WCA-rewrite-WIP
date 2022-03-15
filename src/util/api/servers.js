@@ -61,32 +61,29 @@ server.fetchPlayerCount = async function (world) {
   return playerCountResponse
 }
 
-server.getOptimalWorlds = async function (input) {
+server.getOptimalWorlds = async function (input, playerCount = 36, minutes = 60) {
   const droid = await returnDroid()
   const serverVal = input ?? await server.fetchServersCached()
+  const timeInMs = minutes * 60000
   let optimalWorld = Object.entries(serverVal)
-    .sort(([worldA, a], [worldB, b]) => b.firstSeen - a.firstSeen) // sort by first seen
-    .filter(a => (a[1].players).length > 0 && (a[1].players).length <= 36) // greater than 0 but less than 36
-    .filter(a => (droid.wca.val.ignoredWorlds.indexOf(a[0]) === -1))
-  const lowestWorldTime = optimalWorld[0][1].firstSeen
-  optimalWorld = optimalWorld
-    .filter(data => Date.now() - data[1].firstSeen <= (Date.now() - lowestWorldTime) + 3600000) // 1 hour since last server startup
-    .sort(([worldA, a], [worldB, b]) => (a.players).length - (b.players).length) // sort by players
-  return optimalWorld
-}
-
-server.getOptimalWorldsCache = async function ({ time = 60, maxPlayers = 36 }) {
-  const droid = await returnDroid()
-  const serverVal = await server.fetchServersCached()
-  const timeInMs = time * 60000
-  let optimalWorld = Object.entries(serverVal)
-    .sort(([worldA, a], [worldB, b]) => b.firstSeen - a.firstSeen) // sort by first seen
-    .filter(a => (a[1].players).length > 1 && (a[1].players).length <= maxPlayers) // greater than 1 but less than 36
-    .filter(a => (droid.wca.val.ignoredWorlds.indexOf(a[0]) === -1))
+    .sort(([worldA, dataA], [worldB, dataB]) => dataA.firstSeen - dataA.firstSeen) // sort by first seen
+    .filter(([world, data]) => (data.players).length > 0 && (data.players).length <= playerCount) // greater than 0 but less than 36
+    .filter(([world, data]) => (droid.wca.val.ignoredWorlds.indexOf(world) === -1)) // ignore ignored worlds
   const lowestWorldTime = optimalWorld[0][1].firstSeen
   optimalWorld = optimalWorld
     .filter(data => Date.now() - data[1].firstSeen <= (Date.now() - lowestWorldTime) + timeInMs) // 1 hour since last server startup
-    .sort(([worldA, a], [worldB, b]) => (a.players).length - (b.players).length) // sort by players
+    .sort(([worldA, dataA], [worldB, dataB]) => (dataA.players).length - (dataB.players).length) // sort by players
   return optimalWorld
+}
+
+server.checkServerFull = async function (inputWorld, playerCount = 40) {
+  const serverVal = await server.fetchServersCached()
+  for (const [world, data] of Object.entries(serverVal)) {
+    if (world !== inputWorld) continue
+    const players = (data.players).length
+    if (!players) continue
+    if (playerCount <= players) return true
+  }
+  return false
 }
 module.exports = server
