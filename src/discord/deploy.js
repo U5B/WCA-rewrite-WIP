@@ -5,13 +5,16 @@ const path = require('path')
 const { Collection } = require('discord.js')
 const { discord } = require('./discord.js')
 const { mongo } = require('../mongo/mongo.js')
+const { reload } = require('../util/reload.js')
 
 async function reloadFunctions () {
+  await reload() // reload util functions
   // Misc Discord Functions
   log.log('[DISCORD] Binding functions...')
   const functionPath = './functions'
   const functionFolder = fs.readdirSync(path.resolve(__dirname, functionPath)).filter((file) => file.endsWith('.js'))
   for (const file of functionFolder) {
+    delete require.cache[require.resolve(`${functionPath}/${file}`)]
     const fun = require(`${functionPath}/${file}`)
     if (fun.enabled === false) continue
     discord.wca[`${fun.name}`] = async function wcaDiscordFunction (...args) {
@@ -31,7 +34,7 @@ async function reloadRegularCommands () {
   for (const file of discordCommands) {
     // delete require cache, make discord commands reloadable
     delete require.cache[require.resolve(`${commandFolder}/${file}`)]
-    const command = await require(`${commandFolder}/${file}`)
+    const command = require(`${commandFolder}/${file}`)
     discord.wca.commands.set(command.name, command)
   }
   log.info('[DISCORD] Reloaded Regular Commands.')
@@ -48,7 +51,7 @@ async function reloadSlashCommands (deploy) {
     // delete require cache, make discord commands reloadable
     delete require.cache[require.resolve(`${commandFolder}/${file}`)]
     // then get the data
-    const data = await require(`${commandFolder}/${file}`)
+    const data = require(`${commandFolder}/${file}`)
     await discord.wca.slashCommands.set(data.name, data)
     slashCommandsArray.push(data)
   }

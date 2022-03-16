@@ -5,9 +5,9 @@ const ChatMessage = require('prismarine-chat')('1.16')
 const { mongo } = require('../../mongo/mongo.js')
 const server = require('../../util/api/servers.js')
 const log = require('../../util/log.js')
-const regex = require('../../util/regex.js')
+const regex = require('../../util/misc/regex.js')
 const { discord } = require('../../discord/discord.js')
-const util = require('../../util/utils.js')
+const util = require('../../util/misc/utils.js')
 
 const { initDroid } = require('../droid.js')
 

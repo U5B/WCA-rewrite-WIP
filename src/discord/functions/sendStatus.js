@@ -1,6 +1,6 @@
 const { mongo } = require('../../mongo/mongo.js')
 const { discord } = require('../discord.js')
-const utils = require('../../util/utils.js')
+const utils = require('../../util/misc/utils.js')
 
 module.exports = {
   name: 'sendStatus',

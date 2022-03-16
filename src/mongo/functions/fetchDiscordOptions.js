@@ -3,7 +3,7 @@ const dataSchema = require('../format/dataSchema.js')
 const discordSchema = require('../format/discordSchema.js')
 const droidSchema = require('../format/droidSchema.js')
 const log = require('../../util/log.js')
-const utils = require('../../util/utils.js')
+const utils = require('../../util/misc/utils.js')
 
 module.exports = {
   name: 'fetchDiscordOptions',

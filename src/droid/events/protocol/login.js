@@ -1,4 +1,4 @@
-const utils = require('../../../util/utils.js')
+const utils = require('../../../util/misc/utils.js')
 const log = require('../../../util/log.js')
 const server = require('../../../util/api/servers.js')
 const { discord } = require('../../../discord/discord.js')

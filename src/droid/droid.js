@@ -6,7 +6,7 @@ const path = require('path')
 
 const { mongo } = require('../mongo/mongo.js')
 const log = require('../util/log.js')
-const utils = require('../util/utils.js')
+const utils = require('../util/misc/utils.js')
 const { discord } = require('../discord/discord.js')
 
 let previousOptions
@@ -78,7 +78,13 @@ async function bindFunctions (droid) {
     if (fun.enabled === false) continue
     droid.wca[`${fun.name}`] = async function wcaDroidFunction (...args) {
       args.unshift(droid)
-      const value = await fun.execute(...args)
+      let value
+      try {
+        value = await fun.execute(...args)
+      } catch (e) {
+        log.error(e)
+        value = e
+      }
       return value
     }
     log.info(`[DROID] added function droid.wca.${fun.name} from ${file}`)

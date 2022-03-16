@@ -4,10 +4,10 @@ const log = require('../../util/log.js')
 const { discord } = require('../discord.js')
 const { mongo } = require('../../mongo/mongo.js')
 const servers = require('../../util/api/servers.js')
-const { sleep } = require('../../util/utils.js')
+const { sleep } = require('../../util/misc/utils.js')
 
-const regex = require('../../util/regex.js')
-const utils = require('../../util/utils.js')
+const regex = require('../../util/misc/regex.js')
+const utils = require('../../util/misc/utils.js')
 const worldRegex = regex.regexCreate(regex.group.world)
 
 const playerCountMax = 40

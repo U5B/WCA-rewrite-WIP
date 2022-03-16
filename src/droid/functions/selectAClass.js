@@ -1,6 +1,6 @@
 const ChatMessage = require('prismarine-chat')('1.16')
 
-const regex = require('../../util/regex.js')
+const regex = require('../../util/misc/regex.js')
 const log = require('../../util/log.js')
 
 module.exports = {

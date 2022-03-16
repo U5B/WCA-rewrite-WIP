@@ -1,5 +1,5 @@
-const regex = require('../../util/regex.js')
-const util = require('../../util/utils.js')
+const regex = require('../../util/misc/regex.js')
+const util = require('../../util/misc/utils.js')
 const server = require('../../util/api/servers.js')
 const { discord } = require('../../discord/discord.js')
 const { once } = require('events')

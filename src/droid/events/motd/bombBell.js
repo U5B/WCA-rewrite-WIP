@@ -1,5 +1,5 @@
 const { discord } = require('../../../discord/discord.js')
-const regex = require('../../../util/regex.js')
+const regex = require('../../../util/misc/regex.js')
 const log = require('../../../util/log.js')
 
 module.exports = {

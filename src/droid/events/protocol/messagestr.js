@@ -1,7 +1,7 @@
 const { discord } = require('../../../discord/discord.js')
-const utils = require('../../../util/utils.js')
+const utils = require('../../../util/misc/utils.js')
 const log = require('../../../util/log.js')
-const regex = require('../../../util/regex.js')
+const regex = require('../../../util/misc/regex.js')
 
 let chatArray = []
 let chatSendTimeout

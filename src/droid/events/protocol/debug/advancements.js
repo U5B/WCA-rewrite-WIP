@@ -1,5 +1,5 @@
 const log = require('../../../../util/log')
-const regex = require('../../../../util/regex.js')
+const regex = require('../../../../util/misc/regex.js')
 const { mongo } = require('../../../../mongo/mongo.js')
 
 let territories = {}
@@ -14,9 +14,9 @@ module.exports = {
     log.info('[DROID] updating territories...')
     previousTerritories = await mongo.wca.updateTerritory()
     territories = {}
-    for await (const uwu of json.advancementMapping) {
+    for await (const advancement of json.advancementMapping) {
       // don't care about anything else
-      const displayData = uwu.value.displayData
+      const displayData = advancement?.value?.displayData
       if (!displayData || displayData.flags.hidden === 1 || displayData.flags.show_toast === 1) continue // ignore toasts or hidden tags or no data
       const title = (JSON.parse(displayData.title).text).trim() // get rid of extra whitespace
       const description = (JSON.parse(displayData.description).text).split('\n')

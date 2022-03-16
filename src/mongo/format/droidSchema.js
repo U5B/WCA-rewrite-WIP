@@ -1,5 +1,5 @@
 const { SealedModel } = require('./SealedModel.js')
-const regex = require('../../util/regex.js')
+const regex = require('../../util/misc/regex.js')
 const { Model } = require('objectmodel')
 const droidSchema = {}
 

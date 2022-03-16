@@ -1,5 +1,5 @@
 const log = require('../../util/log.js')
-const regex = require('../../util/regex.js')
+const regex = require('../../util/misc/regex.js')
 const server = require('../../util/api/servers.js')
 
 const ChatMessage = require('prismarine-chat')('1.16')

@@ -1,5 +1,5 @@
 const { discord } = require('../discord.js')
-const utils = require('../../util/utils.js')
+const utils = require('../../util/misc/utils.js')
 
 let lastPresence = null
 module.exports = {
