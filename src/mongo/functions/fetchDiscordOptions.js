@@ -26,6 +26,8 @@ module.exports = {
         shout: '',
         status: '',
         bomb: '',
+        logBomb: '',
+        chatRaw: '',
         'Combat XP': '',
         Dungeon: '',
         Loot: '',

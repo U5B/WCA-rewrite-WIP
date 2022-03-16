@@ -15,7 +15,6 @@ module.exports = {
 async function selectAClass (droid, window) {
   const classes = []
   const weights = []
-  let totalXp = 0
   let classNumber = 0
   const disAllowed = ['structure_void', 'golden_shovel', 'blaze_powder', 'crafting_table']
   const allowedItems = ['bow', 'iron_shovel', 'stick', 'wooden_shovel', 'shears', 'stone_shovel']
@@ -30,6 +29,7 @@ async function selectAClass (droid, window) {
       class: 'uwu',
       level: 420,
       xp: 101,
+      quests: 0,
       slot: item.slot,
       weight: 0
     }
@@ -50,7 +50,6 @@ async function selectAClass (droid, window) {
         case regex.selectAClass.level.test(parsedLine): { // - Level: 69
           const [, output] = regex.selectAClass.level.exec(parsedLine)
           const num = Number(output)
-          weights.push(num)
           classObject.level = num
           break
         }
@@ -58,7 +57,12 @@ async function selectAClass (droid, window) {
           const [, output] = regex.selectAClass.xp.exec(parsedLine)
           const num = Number(output)
           classObject.xp = num
-          totalXp += num
+          break
+        }
+        case regex.selectAClass.quests.test(parsedLine): { // did I test this right
+          const [, output] = regex.selectAClass.quests.exec(parsedLine)
+          const num = Number(output)
+          classObject.quests = num
           break
         }
       }
@@ -67,9 +71,11 @@ async function selectAClass (droid, window) {
     classes.push(classObject)
     classNumber++
   }
-  // add total XP to each class weight
+  // calculate weights
   for (const obj of classes) {
-    obj.weight = obj.level + totalXp
+    const weightNum = obj.level + obj.quests + 105
+    console.log(`TEST when SelectAClass: ${weightNum}`)
+    weights.push(weightNum)
   }
   const sorted = await shuffleArray(classes, weights)
   if (sorted?.slot) {

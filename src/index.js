@@ -24,6 +24,7 @@ async function shutdownProcess () {
 }
 async function shutDownDiscord () {
   if (!discord?.wca) return
+  await discord.wca.setActivity('dead')
   await discord.wca.sendStatus('stopProcess', 'HELP!')
   // purge bomb messages
   const msgIds = discord.wca.bombArray

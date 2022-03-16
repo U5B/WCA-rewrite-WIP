@@ -16,6 +16,6 @@ module.exports = {
   async execute (client, interaction, args) {
     const uwu = await client.wca.sendToMultipleServers('test', 'owo')
     await client.wca.deleteToMultipleServers(uwu)
-    interaction.followUp(`<@${client.user.id}>`)
+    await interaction.followUp(`<@${client.user.id}>`)
   }
 }

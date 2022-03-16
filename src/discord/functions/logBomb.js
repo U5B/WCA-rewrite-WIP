@@ -45,7 +45,7 @@ async function checkValidBomb (username, bomb, world) {
       bombDuration = 20
       break
     }
-    case 'test': {
+    case 'test': { // debug
       break
     }
     default: {
@@ -53,7 +53,7 @@ async function checkValidBomb (username, bomb, world) {
     }
   }
   if (!worldRegex.test(world)) return false
-
+  log.info(`[DROID] logged ${bomb} bomb on ${world}`)
   await mongo.wca.updateBomb(world, bomb)
 
   const bombUsername = await discord.wca.noMarkdown(username)

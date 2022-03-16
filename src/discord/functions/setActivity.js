@@ -17,6 +17,11 @@ module.exports = {
       ]
     }
     switch (msg) {
+      case 'dead': {
+        presence.activities = []
+        presence.status = utils.discord.status.gray
+        break
+      }
       case 'onLobby': {
         presence.activities[0].name = 'the lobby'
         presence.status = utils.discord.status.yellow

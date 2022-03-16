@@ -109,8 +109,8 @@ regex.selectAClass.nickname = XRegExp(`\\[\\>\\] Select ${regex.group.nickname}$
 regex.selectAClass.class = XRegExp(`^\\- Class: ${regex.group.class}$`)
 regex.selectAClass.level = /^- Level: (\d{1,3})$/
 regex.selectAClass.xp = /^- XP: (\d{1,3})%$/
-regex.selectAClass.soul = /^- Soul Points: \d{1,2}$/
-regex.selectAClass.quests = /^- Finished Quests: \d{1,3}\/\d{1,3}$/
+regex.selectAClass.soul = /^- Soul Points: (\d{1,2})$/
+regex.selectAClass.quests = /^- Finished Quests: (\d{1,3})\/(\d{1,3})$/
 
 regex.bomb = {}
 regex.bomb.bell = XRegExp(`§e\\[Bomb Bell\\] §r§f(?:§o)?${regex.group.nickname}(?:§r§f)? §r§7has thrown (?:a|an) §r§f${regex.group.bomb} Bomb §r§7on §r§f${regex.group.world}§r`)
@@ -121,4 +121,12 @@ regex.bomb.bossBar = /(.+?) from (.+?) \[(\d+) min\]/
 regex.chat = {}
 regex.chat.shout = XRegExp(`§3${regex.group.username} \\[${regex.group.world}\\] shouts: §r§b(.+)§r`)
 
+const spam = {
+  soulpoint: /You have \d{1,3} unused Skill Points! Right-Click while holding your compass to use them!/,
+  soulpoint2: /As the sun rises, you feel a little bit safer.../,
+  soulpoint3: /\[\+1 Soul Point\]/,
+  info: /\[Info\] .+/
+
+}
+regex.chat.spam = regex.regexCombine(spam)
 module.exports = regex

@@ -104,52 +104,52 @@ module.exports = {
     switch (subCommand) {
       case 'role': {
         const options = {
-          name: interaction.options.getString('name'),
-          role: interaction.options.getRole('id')
+          name: await interaction.options.getString('name'),
+          role: await interaction.options.getRole('id')
         }
         options.id = options.role.id
-        if (!options.name || !options.id) return interaction.editReply('fail')
-        if ((stringRegex.test(options.name) || stringRegex.test(options.id)) === false) return interaction.editReply('fail')
+        if (!options.name || !options.id) return await interaction.editReply(`Missing arguments for name or id: ${options.name} || ${options.id}`)
+        if ((stringRegex.test(options.name) || stringRegex.test(options.id)) === false) return await interaction.editReply(`Invalid syntax: ${options.name} || ${options.id}`)
         await mongo.wca.configureDiscordRole(guildId, options.id, options.name)
-        interaction.editReply('E')
+        await interaction.editReply(`${options.name}: ${options.id}`)
         break
       }
       case 'channel': {
         const options = {
-          name: interaction.options.getString('name'),
-          channel: interaction.options.getChannel('id')
+          name: await interaction.options.getString('name'),
+          channel: await interaction.options.getChannel('id')
         }
         options.id = options.channel.id
-        if (!options.name || !options.id) return interaction.editReply('fail')
-        if ((stringRegex.test(options.name) || stringRegex.test(options.id)) === false) return interaction.editReply('fail')
+        if (!options.name || !options.id) return await interaction.editReply(`Missing arguments for name or id: ${options.name} || ${options.id}`)
+        if ((stringRegex.test(options.name) || stringRegex.test(options.id)) === false) return await interaction.editReply(`Invalid syntax: ${options.name} || ${options.id}`)
         await mongo.wca.configureDiscordChannel(guildId, options.id, options.name)
-        interaction.editReply('E')
+        await interaction.editReply(`${options.name}: ${options.id}`)
         break
       }
       case 'msg': {
         const options = {
-          name: interaction.options.getString('name'),
-          msg: interaction.options.getString('string')
+          name: await interaction.options.getString('name'),
+          msg: await interaction.options.getString('string')
         }
-        if (!options.name || !options.msg) return interaction.editReply('fail')
-        if ((stringRegex.test(options.name) || stringRegex.test(options.msg)) === false) return interaction.editReply('fail')
+        if (!options.name || !options.msg) return await interaction.editReply(`Missing arguments for name or id: ${options.name} || ${options.msg}`)
+        if ((stringRegex.test(options.name) || stringRegex.test(options.msg)) === false) return await interaction.editReply(`Missing arguments for name or id: ${options.name} || ${options.msg}`)
         await mongo.wca.configureDiscordMessage(guildId, options.msg, options.name)
-        interaction.editReply('E')
+        await interaction.editReply(`${options.name}: ${options.msg}`)
         break
       }
       case 'options': { // todo add options funny
         const options = {
-          host: interaction.options.getString('host'),
-          version: interaction.options.getString('version'),
-          port: interaction.options.getInteger('port')
+          host: await interaction.options.getString('host'),
+          version: await interaction.options.getString('version'),
+          port: await interaction.options.getInteger('port')
         }
-        if (!options.host || !options.version || !options.port) return interaction.editReply('fail')
+        if (!options.host || !options.version || !options.port) return await interaction.editReply(`Missing arguments for name or id: ${options.host} || ${options.version} || ${options.port}`)
         await mongo.wca.configureDroidOptions(options.host, options.port, options.version)
-        interaction.editReply('E')
+        await interaction.editReply(`${options.host}:${options.port} on ${options.version}`)
         break
       }
       default: {
-        interaction.editReply('how')
+        await interaction.editReply('how')
         break
       }
     }

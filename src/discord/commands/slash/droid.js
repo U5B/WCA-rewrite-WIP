@@ -80,42 +80,42 @@ module.exports = {
     switch (subCommand) {
       case 'start': {
         const options = {
-          host: interaction.options.getString('host'),
-          port: interaction.options.getInteger('port'),
-          version: interaction.options.getString('version')
+          host: await interaction.options.getString('host'),
+          port: await interaction.options.getInteger('port'),
+          version: await interaction.options.getString('version')
         }
-        interaction.editReply({ content: `Starting bot with host: ${options.host}; port: ${options.port}, version: ${options.version}`, ephemeral: true })
+        await interaction.editReply({ content: `Starting bot with host: ${options.host}; port: ${options.port}, version: ${options.version}`, ephemeral: true })
         const response = await initDroid(true, options)
         if (response.stack) {
-          interaction.editReply({ content: `Startup Error: ${response.stack}`, ephemeral: true })
+          await interaction.editReply({ content: `Startup Error: ${response.stack}`, ephemeral: true })
         } else {
-          interaction.editReply({ content: `Successfully started bot with host: ${options.host}; port: ${options.port}, version: ${options.version}`, ephemeral: true })
+          await interaction.editReply({ content: `Successfully started bot with host: ${options.host}; port: ${options.port}, version: ${options.version}`, ephemeral: true })
         }
         break
       }
       case 'stop': {
-        interaction.editReply('stopped a bot')
+        await interaction.editReply('stopped a bot')
         const droid = await returnDroid()
         await droid.end('wca:end')
         break
       }
       case 'say': {
-        const string = interaction.options.get('text')?.value
-        interaction.editReply(`said ${string}`)
+        const string = await interaction.options.get('text')?.value
+        await interaction.editReply(`said ${string}`)
         const droid = await returnDroid()
         await droid.chat(string)
         break
       }
       case 'lobby': {
-        const world = interaction.options.get('world')?.value
+        const world = await interaction.options.get('world')?.value
         if (world && !worldRegex.test(world)) return
-        interaction.editReply(`going to lobby: ${world}`)
+        await interaction.editReply(`going to lobby: ${world}`)
         const droid = await returnDroid()
         await droid.wca.lobby(0, world)
         break
       }
       default: {
-        interaction.editReply('how')
+        await interaction.editReply('how')
         break
       }
     }

@@ -10,6 +10,7 @@ module.exports = {
   parse: true,
   async execute (droid, matches, raw) {
     log.warn('[DROID] Lobby: bomb thrown')
+    await discord.wca.sendToMultipleServers('logBomb', raw.toString())
     const [, username, bomb, world] = matches
     const championUsername = await droid.wca.champion(raw, username)
     const bombObject = await discord.wca.logBomb(championUsername.username, bomb, world)
