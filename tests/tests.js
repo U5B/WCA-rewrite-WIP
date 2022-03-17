@@ -9,20 +9,21 @@ async function run () {
 }
 
 async function testChat () {
-  const invalidChat = require('./data/invalid.json')
-  it('motd regexs', async () => {
-    for (const raw of invalidChat) {
+  it('bomb regex', async () => {
+    const bombRegex = require('./data/bombBell.json')
+    for (const raw of bombRegex) {
       const motd = new ChatMessage(raw).toMotd()
-      await regexTest(motd, regex.bomb, false)
+      await regexTest(motd, regex.bomb.bell, true)
     }
     return true
   })
 }
 
-async function regexTest (str, regex, boolean) {
-  for (const name of Object.values(regex)) {
-    assert.ok(name.test(str) === boolean)
-  }
+async function regexTest (string, regex, boolean) {
+  const response = { success: false, regex: regex, string: string }
+  if (regex.test(string) !== boolean) throw Error(`REGEX MATCH ERROR: wanted: ${boolean}, got: ${response.success}\nstring: ${string}\nregex:  ${regex}`)
+  response.success = true
+  return response
 }
 
 run()

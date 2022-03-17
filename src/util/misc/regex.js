@@ -51,7 +51,7 @@ regex.group.username = '(?<username>[0-9A-Za-z_]{1,16})' // this matches only re
 regex.group.nickname = '(?<nickname>[0-9A-Za-z_\\ ]{1,20})' // this matches CHAMPION nicks and regular usernames
 regex.group.world = '(?<world>(?:WC)[0-9]{1,3})' // this may need to be changed if other world prefixes are introduced
 regex.group.class = '(?<class>Archer|Hunter|Warrior|Knight|Mage|Dark\\ Wizard|Assassin|Ninja|Shaman|Skyseer)' // this may need to be changed if other classes are introduced
-regex.group.bomb = '(?<bomb>Combat XP|Loot|Dungeon|Profession Speed|Profession XP)'
+regex.group.bomb = '(?<bomb>Combat\\ XP|Loot|Dungeon|Profession\\ Speed|Profession XP)'
 
 // Regexes used in the world
 regex.world = {}
