@@ -12,6 +12,7 @@ module.exports = {
   async execute (droid, messagestr, messagepos, jsonmsg) {
     if (messagepos === 'game_info') return
     if (regex.chat.spam.test(messagestr)) return
+    if (messagestr.length > 1000) return // dialogue text sucks
     const formattedString = await utils.discord.noMarkdown(messagestr)
     const currentTime = await utils.discord.time()
     clearTimeout(chatSendTimeout)

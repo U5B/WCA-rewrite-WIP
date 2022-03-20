@@ -4,10 +4,11 @@ const fs = require('fs')
 const path = require('path')
 const { Collection } = require('discord.js')
 const { discord } = require('./discord.js')
-const { mongo } = require('../mongo/mongo.js')
+const { mongo, bindFunctions } = require('../mongo/mongo.js')
 const { reload } = require('../util/reload.js')
 
 async function reloadFunctions () {
+  await bindFunctions() // reload mongo functions
   await reload() // reload util functions
   // Misc Discord Functions
   log.log('[DISCORD] Binding functions...')
@@ -72,7 +73,7 @@ async function deploySlashCommands () {
       if (!data) return await discord.application.commands.delete(command.id, guildId)
       fullPermissions.push({ id: command.id, permissions: data.permissions })
     }
-    guild.commands.permissions.set({ fullPermissions })
+    await guild.commands.permissions.set({ fullPermissions })
   }
   log.info('[DISCORD] Deployed Slash Commands.')
 }

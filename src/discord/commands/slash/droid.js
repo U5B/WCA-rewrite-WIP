@@ -1,7 +1,7 @@
 const { initDroid, returnDroid } = require('../../../droid/droid.js')
 const { discord } = require('../../discord.js')
 
-const regex = require('../../../util/regex.js')
+const regex = require('../../../util/misc/regex.js')
 const worldRegex = regex.regexCreate(regex.group.world)
 
 module.exports = {

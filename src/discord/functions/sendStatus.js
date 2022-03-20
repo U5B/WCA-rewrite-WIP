@@ -9,7 +9,7 @@ module.exports = {
     const channelName = 'status'
     const timePrefix = await utils.discord.time()
     const msgIds = []
-    const options = await mongo.db(process.env.mongoDb).collection('discord').find().toArray()
+    const options = await mongo.wca.fetch('discord')
     for (const option of options) {
       if (!option._id || !option.channels[channelName]) continue
       const guildId = option._id

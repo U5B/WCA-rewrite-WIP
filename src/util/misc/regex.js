@@ -51,6 +51,8 @@ regex.group.username = '(?<username>[0-9A-Za-z_]{1,16})' // this matches only re
 regex.group.nickname = '(?<nickname>[0-9A-Za-z_\\ ]{1,20})' // this matches CHAMPION nicks and regular usernames
 regex.group.world = '(?<world>(?:WC)[0-9]{1,3})' // this may need to be changed if other world prefixes are introduced
 regex.group.class = '(?<class>Archer|Hunter|Warrior|Knight|Mage|Dark\\ Wizard|Assassin|Ninja|Shaman|Skyseer)' // this may need to be changed if other classes are introduced
+regex.group.classShort = '(?<short_class>Ar|Hu|Wa|Kn|Ma|Da|As|Ni|Sh|Sk)' // shorthand class
+regex.group.rank = '(?<rank>|★{1,5})'
 regex.group.bomb = '(?<bomb>Combat\\ XP|Loot|Dungeon|Profession\\ Speed|Profession XP)'
 
 // Regexes used in the world
@@ -120,6 +122,10 @@ regex.bomb.bossBar = /(.+?) from (.+?) \[(\d+) min\]/
 
 regex.chat = {}
 regex.chat.shout = XRegExp(`§3${regex.group.username} \\[${regex.group.world}\\] shouts: §r§b(.+)§r`)
+
+regex.guild = {}
+regex.guild.chat = XRegExp(`§3\\[(?:§b)?${regex.group.rank}(?:|§3|§3§o)${regex.group.nickname}§3\\]§r§b (.+)§r`)
+regex.guild.bank = XRegExp(`§3\\[INFO§3\\]§r§b §r§b${regex.group.username} (?:deposited|withdrew) (\\d{0,2})x (.{1,36})￀? (?:to|from) the Guild Bank \\((Everyone|High Ranked)\\)§r`) // Consumables have questionable character in them
 
 const spam = {
   soulpoint: /You have \d{1,3} unused Skill Points! Right-Click while holding your compass to use them!/,

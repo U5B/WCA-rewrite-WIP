@@ -74,7 +74,6 @@ async function selectAClass (droid, window) {
   // calculate weights
   for (const obj of classes) {
     const weightNum = obj.level + obj.quests + 105
-    console.log(`TEST when SelectAClass: ${weightNum}`)
     weights.push(weightNum)
   }
   const sorted = await shuffleArray(classes, weights)

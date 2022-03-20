@@ -1,8 +1,10 @@
 require('dotenv').config({ path: './config/config.env' })
+const fs = require('fs')
 const log = require('./util/log.js')
 const { initMongo, mongo } = require('./mongo/mongo.js')
 const { initDiscord, discord } = require('./discord/discord.js')
 async function init () {
+  if (!fs.existsSync('./config/config.env')) return
   await panic()
   await initMongo()
   await initDiscord()
@@ -20,7 +22,12 @@ async function panic () {
 }
 async function shutdownProcess () {
   await shutDownDiscord()
+  await shutDownMongo()
   process.exit(1)
+}
+async function shutDownMongo () {
+  if (!mongo?.wca) return
+  await mongo.close(true) // yeet the child
 }
 async function shutDownDiscord () {
   if (!discord?.wca) return

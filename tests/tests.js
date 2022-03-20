@@ -11,6 +11,7 @@ async function run () {
 async function testChat () {
   it('bomb regex', async () => {
     const bombRegex = require('./data/bombBell.json')
+    console.log(`Testing: ${regex.bomb.bell}`)
     for (const raw of bombRegex) {
       const motd = new ChatMessage(raw).toMotd()
       await regexTest(motd, regex.bomb.bell, true)

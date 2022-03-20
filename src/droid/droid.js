@@ -16,16 +16,19 @@ async function initDroid (start, options) {
   options = await utils.compareObjects(options, config)
   const mineflayerOptions = options
   previousOptions = options
-
+  options.onMsaCode = function onMsaCode (response) {
+    log.error(response)
+    log.error(response.message)
+  }
   let response
   try {
     // ignore await error, hasn't updated typings yet
     log.info(`[DROID] pinging server ${mineflayerOptions.host}:${mineflayerOptions.port} on ${mineflayerOptions.version}`)
     response = await protocol.ping({ host: mineflayerOptions.host, port: mineflayerOptions.port, version: mineflayerOptions.version })
-    if (start === true) startDroid(mineflayerOptions)
+    if (start === true) await startDroid(mineflayerOptions)
   } catch (error) {
     response = error
-    log.error(`[DROID] failed to ping server ${mineflayerOptions.host}:${mineflayerOptions.port} on ${mineflayerOptions.version}`)
+    log.error(`[DROID] failed to ping/join server ${mineflayerOptions.host}:${mineflayerOptions.port} on ${mineflayerOptions.version}`)
     log.error(error)
   }
   return response
@@ -35,23 +38,20 @@ let droid
 async function startDroid (options) {
   delete require.cache[require.resolve('./events/events.js')]
   const { bindEvents } = require('./events/events.js')
-  if (droid) await droid.end('wca:end')
-  try {
-    log.log('[DROID] Starting droid...')
-    droid = mineflayer.createBot(options) // actually start the bot
-    // await once(droid, 'inject_allowed')
-
-    droid.wca = {}
-    log.log('[DROID] Started droid.')
-    await bindVariables(droid)
-    await bindFunctions(droid)
-    await bindEvents(droid) // bind events
-    await discord.wca.sendStatus('start')
-  } catch (error) {
-    log.error('[DROID] Error when starting...')
-    log.error(error)
-    return error
+  if (droid) {
+    await droid.wca.onEnd('wca:end', true)
+    droid = null
   }
+  log.log('[DROID] Starting droid...')
+  droid = mineflayer.createBot(options) // actually start the bot
+  // await once(droid, 'inject_allowed')
+
+  droid.wca = {}
+  log.log('[DROID] Started droid.')
+  await bindVariables(droid)
+  await bindFunctions(droid)
+  await bindEvents(droid) // bind events
+  await discord.wca.sendStatus('start')
 }
 
 async function returnDroid () {

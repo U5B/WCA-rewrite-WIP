@@ -25,7 +25,7 @@ async function initMongo () {
 async function startup () {
   const collectionArray = await env.listCollections({}, { nameOnly: true }).toArray()
   if (collectionArray.length === 0) await firstTime()
-  await bindFunctions(mongo)
+  else await secondTime()
 }
 
 async function firstTime () {
@@ -33,6 +33,12 @@ async function firstTime () {
   await env.createCollection('bomb')
   await env.createCollection('discord')
   await env.createCollection('droid')
+  await bindFunctions()
+  await mongo.wca.populateBomb()
+}
+
+async function secondTime () {
+  await bindFunctions()
 }
 
 async function bindFunctions () {
@@ -54,4 +60,4 @@ async function bindFunctions () {
   }
 }
 
-module.exports = { initMongo, mongo }
+module.exports = { initMongo, bindFunctions, mongo }

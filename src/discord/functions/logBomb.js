@@ -49,7 +49,8 @@ async function checkValidBomb (username, bomb, world) {
       break
     }
     default: {
-      throw Error(`[DROID] invalid bomb: ${bomb}`)
+      log.error(`[DROID] invalid bomb: ${bomb}`)
+      return
     }
   }
   if (!worldRegex.test(world)) return false
@@ -93,7 +94,7 @@ async function startBombTimer (bomb, duration, messageArray, timerMessage, world
 
 async function sendToMultipleServers (bomb, msg, timerMessage) {
   const msgIds = new Set()
-  const options = await mongo.db(process.env.mongoDb).collection('discord').find().toArray()
+  const options = await mongo.wca.fetch('discord')
   for (const option of options) {
     const guildId = option._id
     const channelId = option.channels[bomb] || option.channels.bomb
