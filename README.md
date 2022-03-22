@@ -24,6 +24,7 @@ A Wynncraft chat archiver. Records in-game chat.
 * avoid worlds when a player mentions them in a shout (???)
 * more guild logging (bank, war, territory)
 * host 24/7 housing
+* proxy support
 
 
 ## Credits
