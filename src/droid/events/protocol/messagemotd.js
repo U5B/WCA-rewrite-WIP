@@ -7,7 +7,7 @@ module.exports = {
   async execute (droid, messagemotd, messagepos, jsonmsg) {
     if (messagepos !== 'game_info') {
       await log.chatMotd(messagemotd)
-      await log.chatMotd(jsonmsg)
+      await log.chatMotd(jsonmsg.json)
     }
   }
 }

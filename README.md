@@ -21,7 +21,7 @@ A Wynncraft chat archiver. Records in-game chat.
   * level 4 interactions: auto respond to duel requests, trade requests, housing, private messages
 * more event logging such as global annoucements
 * /joinsky command (automatically joins a specifc player)
-* avoid worlds when a player mentions them in a shout
+* avoid worlds when a player mentions them in a shout (???)
 * more guild logging (bank, war, territory)
 * host 24/7 housing
 
@@ -38,9 +38,9 @@ A Wynncraft chat archiver. Records in-game chat.
 | [dotenv](https://github.com/motdotla/dotenv) | enviromental variables |
 | [easytimer.js](https://github.com/albert-gonzalez/easytimer.js/) | timers |
 | [mineflayer](https://github.com/prismarinejs/mineflayer) | high-level minecraft protocol with physics and chat |
-| [mojang-minecraft-api](https://github.com/DaanKorver/mojang-minecraft-api) | mojang api |
 | [mongodb](https://github.com/mongodb/node-mongodb-native) | database |
 | [objectmodel](https://github.com/sylvainpolletvillard/ObjectModel) | database schema |
+| [prismarine-proxy](https://github.com/PrismarineJS/prismarine-proxy) | minecraft proxy for vanilla client |
 | [xregexp](https://github.com/slevithan/xregexp) | better regex |
 
 ### External Services used:

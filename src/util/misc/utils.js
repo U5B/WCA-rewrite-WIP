@@ -1,6 +1,6 @@
 const log = require('../log.js')
+const { noMarkdown } = require('./noMarkdown.js')
 const utils = {}
-utils.discord = {}
 
 utils.sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 utils.promiseTimeout = async function (promise, timeout) {
@@ -20,9 +20,12 @@ utils.compareObjects = async function (objects, defaultObjects) {
   }
   return objects
 }
+
+utils.discord = {}
 utils.discord.noMarkdown = async function (message) {
-  const unescaped = message.replace(/\\(\||@|>|<|:|\*|_|`|~|\\)/g, '$1') // COMMENT: unescape any "backslashed" markdown
-  const escaped = unescaped.replace(/(\||@|>|<|:|\*|_|`|~|\\)/g, '\\$1') // COMMENT: escape the markdown
+  // const unescaped = message.replace(/\\(\||@|>|<|:|\*|_|`|~|\\)/g, '$1') // COMMENT: unescape any "backslashed" markdown
+  // const escaped = unescaped.replace(/(\||@|>|<|:|\*|_|`|~|\\)/g, '\\$1') // COMMENT: escape the markdown
+  const escaped = await noMarkdown(message)
   return escaped
 }
 utils.discord.time = async function () {
