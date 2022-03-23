@@ -5,4 +5,4 @@
 image:
   file: .gitpod.dockerfile
 tasks:
-- install: npm install
+- command: npm install
