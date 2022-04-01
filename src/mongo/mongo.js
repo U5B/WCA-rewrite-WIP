@@ -13,9 +13,9 @@ const env = mongo.db(process.env.mongoDb)
 
 async function initMongo () {
   try {
-    log.log('[MONGODB] Connecting to database.')
+    await log.log('[MONGODB] Connecting to database.')
     await mongo.connect()
-    log.log('[MONGODB] Connected to database.')
+    await log.log('[MONGODB] Connected to database.')
     await startup()
   } catch (error) {
     await log.error(error)
@@ -43,7 +43,7 @@ async function secondTime () {
 
 async function bindFunctions () {
   mongo.wca = {}
-  log.log('[MONGODB] Binding functions...')
+  await log.log('[MONGODB] Binding functions...')
   const functionPath = './functions'
   const functionFolder = fs.readdirSync(path.resolve(__dirname, functionPath)).filter((file) => file.endsWith('.js'))
   for (const file of functionFolder) {
@@ -56,7 +56,7 @@ async function bindFunctions () {
       const value = await fun.execute(...args)
       return value
     }
-    log.info(`[MONGODB] added function client.wca.${fun.name} from ${file}`)
+    await log.info(`[MONGODB] added function client.wca.${fun.name} from ${file}`)
   }
 }
 

@@ -10,7 +10,7 @@ module.exports = {
     if (lastLocation === location) return
     droid.wca.val.location = location
     lastLocation = location
-    log.info(`[DROID] location set as ${location}`)
+    await log.info(`[DROID] location set as ${location}`)
     switch (location) {
       case 'lobby': {
         await discord.wca.sendStatus('hub', string)

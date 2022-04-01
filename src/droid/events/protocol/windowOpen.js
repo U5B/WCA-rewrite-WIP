@@ -20,9 +20,9 @@ module.exports = {
         break
       }
       default: {
-        log.error(`[DROID] Invalid Inventory Window: ${windowTitle}`)
-        log.error(window)
-        droid.closeWindow()
+        await log.error(`[DROID] Invalid Inventory Window: ${windowTitle}`)
+        await log.error(window)
+        await droid.closeWindow()
         break
       }
     }

@@ -49,12 +49,12 @@ async function checkValidBomb (username, bomb, world) {
       break
     }
     default: {
-      log.error(`[DROID] invalid bomb: ${bomb}`)
+      await log.error(`[DROID] invalid bomb: ${bomb}`)
       return
     }
   }
   if (!worldRegex.test(world)) return false
-  log.info(`[DROID] logged ${bomb} bomb on ${world}`)
+  await log.info(`[DROID] logged ${bomb} bomb on ${world}`)
   await mongo.wca.updateBomb(world, bomb)
 
   const bombUsername = await discord.wca.noMarkdown(username)
@@ -125,7 +125,7 @@ async function editToMultipleServers (msgIds, timerMessage) {
     try {
       await msg[0].edit(`${msg[1]} ${timerMessage}`)
     } catch (error) {
-      log.error(error)
+      await log.error(error)
     }
   }
   return msgIds
@@ -136,7 +136,7 @@ async function deleteToMultipleServers (msgIds) {
       await msg[0].delete()
       await msgIds.delete(msg)
     } catch (error) {
-      log.error(error)
+      await log.error(error)
     }
   }
   // try again if somehow it didn't work
@@ -147,7 +147,7 @@ async function deleteToMultipleServers (msgIds) {
         await msg[0].delete()
         await msgIds.delete(msg)
       } catch (error) {
-        log.error(error)
+        await log.error(error)
       }
     }
   }

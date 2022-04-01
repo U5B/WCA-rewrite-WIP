@@ -18,6 +18,7 @@ module.exports = {
 }
 
 async function selectAServer (droid) {
+  await servers.startInterval()
   const api = await servers.fetchServersCached() // fetch servers
 
   const overrideWorld = droid.wca.val.overrideWorld // force-select our world (if possible)
@@ -63,18 +64,18 @@ async function selectAServer (droid) {
       delete optimalWorlds[0]
       continue
     } else if (slot) {
-      log.info(`[DROID] Selected World ${selectedWorld}`)
+      await log.info(`[DROID] Selected World ${selectedWorld}`)
       found = true
       check = false
     } else {
-      log.error('[DROID] Could not find optimal world...')
+      await log.error('[DROID] Could not find optimal world...')
       found = false
       check = false
     }
     if (slot) droid.clickWindow(slot, 0, 0)
   }
   if (found === false && check === false) {
-    log.info(`[DROID] Selected recommended ${recommendedWorld}`)
+    await log.info(`[DROID] Selected recommended ${recommendedWorld}`)
     await droid.waitForTicks(10)
     droid.clickWindow(13, 0, 0)
   }

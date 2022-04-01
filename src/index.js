@@ -16,13 +16,17 @@ async function panic () {
   process.once('SIGINT', shutdownProcess)
   process.once('SIGTERM', shutdownProcess)
   process.on('uncaughtException', async (err) => {
-    log.error(err)
+    await log.error(err)
     shutdownProcess()
   })
 }
 async function shutdownProcess () {
-  await shutDownDiscord()
-  await shutDownMongo()
+  try {
+    await shutDownDiscord()
+    await shutDownMongo()
+  } catch {
+    process.exit(1)
+  }
   process.exit(1)
 }
 async function shutDownMongo () {
@@ -41,7 +45,7 @@ async function shutDownDiscord () {
         await msg[0].delete()
         await msgIds.delete(msg)
       } catch (error) {
-        log.error(error)
+        await log.error(error)
       }
     }
   }

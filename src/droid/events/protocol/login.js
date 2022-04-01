@@ -15,6 +15,5 @@ module.exports = {
       discord.wca.droidRetryAttempts = 0
       starting = false
     }
-    server.startInterval()
   }
 }

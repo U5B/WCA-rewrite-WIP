@@ -9,7 +9,7 @@ verify.verifyObjects = async function (Schema, values) {
     }
     return true
   } catch (error) {
-    log.error(error)
+    await log.error(error)
     return false
   }
 }
@@ -19,7 +19,7 @@ verify.verifyObject = async function (Schema, value) {
     Schema(value)
     return true
   } catch (error) {
-    log.error(error)
+    await log.error(error)
     return false
   }
 }

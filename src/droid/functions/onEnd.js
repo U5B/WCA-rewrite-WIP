@@ -9,14 +9,14 @@ const regex = require('../../util/misc/regex.js')
 const { discord } = require('../../discord/discord.js')
 const util = require('../../util/misc/utils.js')
 
-const { initDroid } = require('../droid.js')
+const { initDroid, endDroid } = require('../droid.js')
 
 module.exports = {
   name: 'onEnd',
   enabled: true,
   async execute (droid, kickReason = 'socketClosed', loggedIn) {
     const response = await determineEndReason(kickReason)
-    await cleanup()
+    await cleanup(droid)
     if (response.restart === true && discord.wca.droidRetryAttempts < 2) {
       await discord.wca.sendStatus('kick', `Restarting in **${response.duration}s**.\nReason: \`${response.reason}\``)
       await log.error(`[DROID] Kicked... ${response.reason}`)
@@ -60,7 +60,7 @@ async function determineEndReason (kickReason) {
         kickReason = await new ChatMessage(await JSON.parse(kickReason)).toString().trim().split('\n')
         response.reason = kickReason
       } catch (e) {
-        log.error(e)
+        await log.error(e)
         response.restart = false
         break
       }
@@ -86,6 +86,7 @@ async function determineEndReason (kickReason) {
   return response
 }
 
-async function cleanup () {
+async function cleanup (droid) {
   await server.clearInterval()
+  await endDroid()
 }

@@ -1,14 +1,12 @@
-const regex = require('../../../util/misc/regex.js')
 const { returnDroid } = require('../../droid.js')
-
 module.exports = {
-  name: 'class',
-  regex: regex.selectAClass.chat,
+  name: 'tpyes',
+  regex: /([0-9a-zA-Z_]{1,16}) has requested (?:that you|to) teleport to (?:you|them)\./,
   enabled: true,
   once: false,
-  parse: false,
+  parse: true,
   async execute () {
     const droid = await returnDroid()
-    await droid.wca.location('class')
+    await droid.chat('/essentials:tpyes')
   }
 }

@@ -3,9 +3,11 @@ const log = require('../../util/log.js')
 module.exports = {
   name: 'messageCreate',
   async execute (client, message) {
+    /*
     if (!message.guild || message.author.bot) return
     const prefix = 'uwu!'
     if (message.content.startsWith(prefix)) return runCommand(message, prefix)
+    */
   }
 }
 async function runCommand (message, prefix) {
@@ -25,7 +27,7 @@ async function runCommand (message, prefix) {
   try {
     command.execute(client, message, args, prefix)
   } catch (error) {
-    log.error(error)
+    await log.error(error)
     await message.channel.send({ content: 'An unexpected error occured!' })
   }
 }

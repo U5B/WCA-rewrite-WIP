@@ -27,7 +27,7 @@ server.fetchServers = async function () {
     servers = response.data.servers
     return servers
   } catch (error) {
-    log.error(error)
+    await log.error(error)
   }
 }
 

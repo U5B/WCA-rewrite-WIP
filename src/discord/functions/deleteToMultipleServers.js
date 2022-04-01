@@ -7,7 +7,7 @@ module.exports = {
       try {
         await value.delete()
       } catch (error) {
-        log.error(error)
+        await log.error(error)
         await value.delete()
       }
     }

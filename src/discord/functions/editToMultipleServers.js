@@ -8,7 +8,7 @@ module.exports = {
       try {
         await value.edit(msg)
       } catch (error) {
-        log.error(error)
+        await log.error(error)
         await value.edit(msg)
       }
     }
