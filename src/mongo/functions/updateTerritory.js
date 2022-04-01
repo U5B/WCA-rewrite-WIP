@@ -14,13 +14,13 @@ module.exports = {
     try { // fetch territories
       territoriesDb = await col.findOne({ _id: 'territories' })
     } catch (error) {
-      log.error(`[MONGODB] ${error}`)
+      await log.error(`[MONGODB] ${error}`)
     }
     if (!territoriesDb) { // if territories isn't found, try to fetch previousTerritories
       try {
         territoriesDb = await col.findOne({ _id: 'previousTerritories' })
       } catch (error) {
-        log.error(`[MONGODB] ${error}`)
+        await log.error(`[MONGODB] ${error}`)
         return false
       }
     }

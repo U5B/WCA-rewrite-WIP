@@ -6,7 +6,7 @@ module.exports = {
     if (interaction.isCommand()) {
       // defer the reply as soon as possible
       await interaction.deferReply({ content: 'Please wait...', ephemeral: true })
-      log.info(`[DISCORD] ${interaction.user.tag} executed ${interaction.commandName} in ${interaction.guild.name}.`)
+      await log.info(`[DISCORD] ${interaction.user.tag} executed ${interaction.commandName} in ${interaction.guild.name}.`)
 
       try {
         // check if we actually have a command with that name
@@ -16,7 +16,7 @@ module.exports = {
         // execute the command
         await command.execute(client, interaction)
       } catch (error) {
-        log.error(error)
+        await log.error(error)
         return interaction.followUp({ content: `There was an error while executing this command! Error: ${error}`, ephemeral: true })
       }
     }

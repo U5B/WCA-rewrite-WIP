@@ -13,7 +13,7 @@ module.exports = {
     try {
       optionsDb = await col.findOne({ _id: 'options' })
     } catch (error) {
-      log.error(`[MONGODB] ${error}`)
+      await log.error(`[MONGODB] ${error}`)
       return false
     }
     optionsDb = {

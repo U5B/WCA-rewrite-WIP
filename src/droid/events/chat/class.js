@@ -1,5 +1,5 @@
-const log = require('../../../util/log.js')
 const regex = require('../../../util/misc/regex.js')
+const { returnDroid } = require('../../droid.js')
 
 module.exports = {
   name: 'class',
@@ -7,7 +7,8 @@ module.exports = {
   enabled: true,
   once: false,
   parse: false,
-  async execute (droid) {
+  async execute () {
+    const droid = await returnDroid()
     await droid.wca.location('class')
   }
 }

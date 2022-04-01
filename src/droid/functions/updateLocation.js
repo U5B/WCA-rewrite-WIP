@@ -33,7 +33,7 @@ async function checkPlayers (droid) {
         const [, world] = regex.world.global.exec(name)
         droid.wca.val.currentWorld = world
         await droid.wca.location('world')
-        const full = await server.checkServerFull(world)
+        const full = await server.checkServerFull(world, 39)
         if (full) await droid.wca.lobby()
         found = true
         return

@@ -14,12 +14,12 @@ const discord = new Client({
 })
 
 async function initDiscord () {
-  log.log('[DISCORD] Connecting to Discord...')
+  await log.log('[DISCORD] Connecting to Discord...')
   await discord.login(process.env.discordToken)
-  log.log('[DISCORD] Connected to Discord.')
+  await log.log('[DISCORD] Connected to Discord.')
 
   // discord events
-  log.log('[DISCORD] Binding events...')
+  await log.log('[DISCORD] Binding events...')
   const eventPath = './events'
   const discordFolder = fs.readdirSync(path.resolve(__dirname, eventPath)).filter(file => file.endsWith('.js'))
   for (const file of discordFolder) {
@@ -31,10 +31,10 @@ async function initDiscord () {
     }
     if (event.once === true) {
       discord.once(event.name, listener)
-      log.info(`[DISCORD] once | added event listener <${event.name}> from ${file}`)
+      await log.info(`[DISCORD] once | added event listener <${event.name}> from ${file}`)
     } else {
       discord.on(event.name, listener)
-      log.info(`[DISCORD] on   | added event listener <${event.name}> from ${file}`)
+      await log.info(`[DISCORD] on   | added event listener <${event.name}> from ${file}`)
     }
   }
 
@@ -44,7 +44,7 @@ async function initDiscord () {
   await discord.application.fetch()
 
   // Discord Commands
-  log.log('[DISCORD] Loading Commands...')
+  await log.log('[DISCORD] Loading Commands...')
   const { reloadRegularCommands, reloadSlashCommands, reloadFunctions } = require('./deploy.js')
   await reloadFunctions()
   await reloadRegularCommands()

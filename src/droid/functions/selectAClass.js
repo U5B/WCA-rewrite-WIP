@@ -78,10 +78,10 @@ async function selectAClass (droid, window) {
   }
   const sorted = await shuffleArray(classes, weights)
   if (sorted?.slot) {
-    log.info(`[DROID] picked class: ${sorted.class}, lvl: ${sorted.level}, xp: ${sorted.xp}`)
+    await log.info(`[DROID] picked class: ${sorted.class}, lvl: ${sorted.level}, xp: ${sorted.xp}`)
     droid.clickWindow(sorted.slot, 0, 0)
   } else {
-    log.info(`[DROID] picked first class: ${classes[0].class}, lvl: ${classes[0].level}, xp: ${classes[0].xp}`)
+    await log.info(`[DROID] picked first class: ${classes[0].class}, lvl: ${classes[0].level}, xp: ${classes[0].xp}`)
     droid.clickWindow(1, 0, 0)
   }
 }

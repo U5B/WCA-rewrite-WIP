@@ -13,7 +13,7 @@ module.exports = {
     try {
       optionsDb = await col.findOne({ _id: guildId })
     } catch (error) {
-      log.error(`[MONGODB] ${error}`)
+      await log.error(`[MONGODB] ${error}`)
       return false
     }
     if (!optionsDb) return false
