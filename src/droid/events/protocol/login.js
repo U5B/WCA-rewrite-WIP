@@ -1,11 +1,19 @@
+const utils = require('../../../util/misc/utils.js')
 const log = require('../../../util/log.js')
-const { once } = require('events')
+const server = require('../../../util/api/servers.js')
+const { discord } = require('../../../discord/discord.js')
 
+let starting = true
 module.exports = {
-  name: 'physicsTick',
+  name: 'login',
   enabled: true,
-  once: false,
+  once: true,
   async execute (droid) {
-    log.error('tick')
+    await log.log('[DROID] Logged in.')
+    if (starting) {
+      await discord.wca.sendStatus('firstConnect')
+      discord.wca.droidRetryAttempts = 0
+      starting = false
+    }
   }
 }

@@ -3,6 +3,7 @@ module.exports = {
   enabled: true,
   once: false,
   async execute (droid, url, hash) {
-    droid.acceptResourcePack()
+    await droid.wca.location('resourcePack', url)
+    await droid.acceptResourcePack()
   }
 }

@@ -1,10 +1,10 @@
-const log = require('../../../../util/log')
-
 module.exports = {
   name: 'update_time',
-  enabled: false,
+  enabled: true,
   once: false,
   async execute (droid) {
-    log.chat('update_time')
+    try {
+      await droid.wca.updateLocation()
+    } catch (e) {}
   }
 }

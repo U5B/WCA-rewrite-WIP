@@ -1,0 +1,704 @@
+{
+  "bombs": {
+    "WC0": {
+      "Combat XP": 26,
+      "Dungeon": 1,
+      "Loot": 1,
+      "Profession Speed": 9,
+      "Profession XP": 6
+    },
+    "WC1": {
+      "Combat XP": 560,
+      "Dungeon": 252,
+      "Loot": 133,
+      "Profession Speed": 269,
+      "Profession XP": 152
+    },
+    "WC2": {
+      "Combat XP": 525,
+      "Dungeon": 171,
+      "Loot": 127,
+      "Profession Speed": 178,
+      "Profession XP": 113
+    },
+    "WC3": {
+      "Combat XP": 530,
+      "Dungeon": 173,
+      "Loot": 146,
+      "Profession Speed": 208,
+      "Profession XP": 123
+    },
+    "WC4": {
+      "Combat XP": 540,
+      "Dungeon": 160,
+      "Loot": 106,
+      "Profession Speed": 202,
+      "Profession XP": 132
+    },
+    "WC5": {
+      "Combat XP": 513,
+      "Dungeon": 186,
+      "Loot": 123,
+      "Profession Speed": 237,
+      "Profession XP": 143
+    },
+    "WC6": {
+      "Combat XP": 516,
+      "Dungeon": 178,
+      "Loot": 114,
+      "Profession Speed": 218,
+      "Profession XP": 136
+    },
+    "WC7": {
+      "Combat XP": 490,
+      "Dungeon": 161,
+      "Loot": 151,
+      "Profession Speed": 164,
+      "Profession XP": 107
+    },
+    "WC8": {
+      "Combat XP": 524,
+      "Dungeon": 192,
+      "Loot": 136,
+      "Profession Speed": 239,
+      "Profession XP": 152
+    },
+    "WC9": {
+      "Combat XP": 582,
+      "Dungeon": 192,
+      "Loot": 120,
+      "Profession Speed": 296,
+      "Profession XP": 186
+    },
+    "WC10": {
+      "Combat XP": 552,
+      "Dungeon": 215,
+      "Loot": 151,
+      "Profession Speed": 158,
+      "Profession XP": 104
+    },
+    "WC11": {
+      "Combat XP": 480,
+      "Dungeon": 193,
+      "Loot": 141,
+      "Profession Speed": 214,
+      "Profession XP": 130
+    },
+    "WC12": {
+      "Combat XP": 508,
+      "Dungeon": 213,
+      "Loot": 137,
+      "Profession Speed": 217,
+      "Profession XP": 119
+    },
+    "WC13": {
+      "Combat XP": 465,
+      "Dungeon": 88,
+      "Loot": 117,
+      "Profession Speed": 194,
+      "Profession XP": 117
+    },
+    "WC14": {
+      "Combat XP": 482,
+      "Dungeon": 139,
+      "Loot": 104,
+      "Profession Speed": 183,
+      "Profession XP": 116
+    },
+    "WC15": {
+      "Combat XP": 471,
+      "Dungeon": 142,
+      "Loot": 104,
+      "Profession Speed": 153,
+      "Profession XP": 86
+    },
+    "WC16": {
+      "Combat XP": 405,
+      "Dungeon": 108,
+      "Loot": 114,
+      "Profession Speed": 216,
+      "Profession XP": 126
+    },
+    "WC17": {
+      "Combat XP": 434,
+      "Dungeon": 132,
+      "Loot": 111,
+      "Profession Speed": 145,
+      "Profession XP": 105
+    },
+    "WC18": {
+      "Combat XP": 475,
+      "Dungeon": 157,
+      "Loot": 112,
+      "Profession Speed": 204,
+      "Profession XP": 122
+    },
+    "WC19": {
+      "Combat XP": 452,
+      "Dungeon": 150,
+      "Loot": 102,
+      "Profession Speed": 149,
+      "Profession XP": 103
+    },
+    "WC20": {
+      "Combat XP": 485,
+      "Dungeon": 192,
+      "Loot": 109,
+      "Profession Speed": 169,
+      "Profession XP": 107
+    },
+    "WC21": {
+      "Combat XP": 448,
+      "Dungeon": 178,
+      "Loot": 82,
+      "Profession Speed": 128,
+      "Profession XP": 100
+    },
+    "WC22": {
+      "Combat XP": 550,
+      "Dungeon": 193,
+      "Loot": 123,
+      "Profession Speed": 251,
+      "Profession XP": 139
+    },
+    "WC23": {
+      "Combat XP": 443,
+      "Dungeon": 152,
+      "Loot": 149,
+      "Profession Speed": 231,
+      "Profession XP": 149
+    },
+    "WC24": {
+      "Combat XP": 453,
+      "Dungeon": 119,
+      "Loot": 84,
+      "Profession Speed": 182,
+      "Profession XP": 103
+    },
+    "WC25": {
+      "Combat XP": 416,
+      "Dungeon": 130,
+      "Loot": 158,
+      "Profession Speed": 183,
+      "Profession XP": 115
+    },
+    "WC26": {
+      "Combat XP": 473,
+      "Dungeon": 177,
+      "Loot": 121,
+      "Profession Speed": 221,
+      "Profession XP": 132
+    },
+    "WC27": {
+      "Combat XP": 468,
+      "Dungeon": 184,
+      "Loot": 90,
+      "Profession Speed": 148,
+      "Profession XP": 94
+    },
+    "WC28": {
+      "Combat XP": 382,
+      "Dungeon": 96,
+      "Loot": 89,
+      "Profession Speed": 199,
+      "Profession XP": 111
+    },
+    "WC29": {
+      "Combat XP": 452,
+      "Dungeon": 139,
+      "Loot": 95,
+      "Profession Speed": 156,
+      "Profession XP": 95
+    },
+    "WC30": {
+      "Combat XP": 381,
+      "Dungeon": 112,
+      "Loot": 145,
+      "Profession Speed": 125,
+      "Profession XP": 82
+    },
+    "WC31": {
+      "Combat XP": 347,
+      "Dungeon": 128,
+      "Loot": 122,
+      "Profession Speed": 151,
+      "Profession XP": 97
+    },
+    "WC32": {
+      "Combat XP": 370,
+      "Dungeon": 108,
+      "Loot": 73,
+      "Profession Speed": 139,
+      "Profession XP": 84
+    },
+    "WC33": {
+      "Combat XP": 359,
+      "Dungeon": 149,
+      "Loot": 84,
+      "Profession Speed": 163,
+      "Profession XP": 94
+    },
+    "WC34": {
+      "Combat XP": 325,
+      "Dungeon": 113,
+      "Loot": 75,
+      "Profession Speed": 152,
+      "Profession XP": 84
+    },
+    "WC35": {
+      "Combat XP": 392,
+      "Dungeon": 118,
+      "Loot": 67,
+      "Profession Speed": 163,
+      "Profession XP": 92
+    },
+    "WC36": {
+      "Combat XP": 335,
+      "Dungeon": 94,
+      "Loot": 73,
+      "Profession Speed": 193,
+      "Profession XP": 105
+    },
+    "WC37": {
+      "Combat XP": 317,
+      "Dungeon": 121,
+      "Loot": 99,
+      "Profession Speed": 120,
+      "Profession XP": 72
+    },
+    "WC38": {
+      "Combat XP": 327,
+      "Dungeon": 104,
+      "Loot": 88,
+      "Profession Speed": 109,
+      "Profession XP": 72
+    },
+    "WC39": {
+      "Combat XP": 247,
+      "Dungeon": 92,
+      "Loot": 66,
+      "Profession Speed": 140,
+      "Profession XP": 92
+    },
+    "WC40": {
+      "Combat XP": 299,
+      "Dungeon": 136,
+      "Loot": 69,
+      "Profession Speed": 64,
+      "Profession XP": 39
+    },
+    "WC41": {
+      "Combat XP": 159,
+      "Dungeon": 69,
+      "Loot": 47,
+      "Profession Speed": 101,
+      "Profession XP": 60
+    },
+    "WC42": {
+      "Combat XP": 237,
+      "Dungeon": 82,
+      "Loot": 62,
+      "Profession Speed": 79,
+      "Profession XP": 49
+    },
+    "WC43": {
+      "Combat XP": 217,
+      "Dungeon": 115,
+      "Loot": 32,
+      "Profession Speed": 114,
+      "Profession XP": 68
+    },
+    "WC44": {
+      "Combat XP": 171,
+      "Dungeon": 50,
+      "Loot": 41,
+      "Profession Speed": 98,
+      "Profession XP": 66
+    },
+    "WC45": {
+      "Combat XP": 174,
+      "Dungeon": 36,
+      "Loot": 49,
+      "Profession Speed": 82,
+      "Profession XP": 55
+    },
+    "WC46": {
+      "Combat XP": 142,
+      "Dungeon": 52,
+      "Loot": 38,
+      "Profession Speed": 87,
+      "Profession XP": 48
+    },
+    "WC47": {
+      "Combat XP": 137,
+      "Dungeon": 43,
+      "Loot": 33,
+      "Profession Speed": 43,
+      "Profession XP": 24
+    },
+    "WC48": {
+      "Combat XP": 172,
+      "Dungeon": 55,
+      "Loot": 21,
+      "Profession Speed": 83,
+      "Profession XP": 49
+    },
+    "WC49": {
+      "Combat XP": 113,
+      "Dungeon": 44,
+      "Loot": 14,
+      "Profession Speed": 73,
+      "Profession XP": 44
+    },
+    "WC50": {
+      "Combat XP": 88,
+      "Dungeon": 29,
+      "Loot": 30,
+      "Profession Speed": 37,
+      "Profession XP": 22
+    },
+    "WC51": {
+      "Combat XP": 115,
+      "Dungeon": 54,
+      "Loot": 21,
+      "Profession Speed": 41,
+      "Profession XP": 23
+    },
+    "WC52": {
+      "Combat XP": 112,
+      "Dungeon": 59,
+      "Loot": 10,
+      "Profession Speed": 9,
+      "Profession XP": 9
+    },
+    "WC53": {
+      "Combat XP": 78,
+      "Dungeon": 24,
+      "Loot": 24,
+      "Profession Speed": 32,
+      "Profession XP": 14
+    },
+    "WC54": {
+      "Combat XP": 66,
+      "Dungeon": 34,
+      "Loot": 18,
+      "Profession Speed": 31,
+      "Profession XP": 27
+    },
+    "WC55": {
+      "Combat XP": 64,
+      "Dungeon": 15,
+      "Loot": 16,
+      "Profession Speed": 39,
+      "Profession XP": 21
+    },
+    "WC56": {
+      "Combat XP": 86,
+      "Dungeon": 21,
+      "Loot": 18,
+      "Profession Speed": 35,
+      "Profession XP": 30
+    },
+    "WC57": {
+      "Combat XP": 56,
+      "Dungeon": 30,
+      "Loot": 4,
+      "Profession Speed": 17,
+      "Profession XP": 10
+    },
+    "WC58": {
+      "Combat XP": 44,
+      "Dungeon": 8,
+      "Loot": 11,
+      "Profession Speed": 22,
+      "Profession XP": 15
+    },
+    "WC59": {
+      "Combat XP": 19,
+      "Dungeon": 1,
+      "Loot": 3,
+      "Profession Speed": 3,
+      "Profession XP": 4
+    },
+    "WC60": {
+      "Combat XP": 38,
+      "Dungeon": 13,
+      "Loot": 6,
+      "Profession Speed": 45,
+      "Profession XP": 24
+    },
+    "WC61": {
+      "Combat XP": 33,
+      "Dungeon": 8,
+      "Loot": 5,
+      "Profession Speed": 11,
+      "Profession XP": 6
+    },
+    "WC62": {
+      "Combat XP": 26,
+      "Dungeon": 12,
+      "Loot": 8,
+      "Profession Speed": 10,
+      "Profession XP": 7
+    },
+    "WC63": {
+      "Combat XP": 15,
+      "Dungeon": 9,
+      "Loot": 5,
+      "Profession Speed": 2,
+      "Profession XP": 1
+    },
+    "WC64": {
+      "Combat XP": 12,
+      "Dungeon": 14,
+      "Loot": 9,
+      "Profession Speed": 10,
+      "Profession XP": 6
+    },
+    "WC65": {
+      "Combat XP": 7,
+      "Dungeon": 2,
+      "Loot": 1,
+      "Profession Speed": 1,
+      "Profession XP": 1
+    },
+    "WC66": {
+      "Combat XP": 21,
+      "Dungeon": 5,
+      "Loot": 2,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC67": {
+      "Combat XP": 20,
+      "Dungeon": 16,
+      "Loot": 3,
+      "Profession Speed": 15,
+      "Profession XP": 8
+    },
+    "WC68": {
+      "Combat XP": 23,
+      "Dungeon": 10,
+      "Loot": 4,
+      "Profession Speed": 11,
+      "Profession XP": 7
+    },
+    "WC69": {
+      "Combat XP": 20,
+      "Dungeon": 5,
+      "Loot": 10,
+      "Profession Speed": 10,
+      "Profession XP": 5
+    },
+    "WC70": {
+      "Combat XP": 5,
+      "Dungeon": 3,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 1
+    },
+    "WC71": {
+      "Combat XP": 9,
+      "Dungeon": 3,
+      "Loot": 0,
+      "Profession Speed": 2,
+      "Profession XP": 3
+    },
+    "WC72": {
+      "Combat XP": 26,
+      "Dungeon": 0,
+      "Loot": 5,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC73": {
+      "Combat XP": 14,
+      "Dungeon": 16,
+      "Loot": 11,
+      "Profession Speed": 6,
+      "Profession XP": 3
+    },
+    "WC74": {
+      "Combat XP": 14,
+      "Dungeon": 3,
+      "Loot": 1,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC75": {
+      "Combat XP": 13,
+      "Dungeon": 2,
+      "Loot": 0,
+      "Profession Speed": 10,
+      "Profession XP": 6
+    },
+    "WC76": {
+      "Combat XP": 4,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC77": {
+      "Combat XP": 3,
+      "Dungeon": 0,
+      "Loot": 2,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC78": {
+      "Combat XP": 8,
+      "Dungeon": 4,
+      "Loot": 0,
+      "Profession Speed": 2,
+      "Profession XP": 1
+    },
+    "WC79": {
+      "Combat XP": 2,
+      "Dungeon": 4,
+      "Loot": 3,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC80": {
+      "Combat XP": 3,
+      "Dungeon": 0,
+      "Loot": 3,
+      "Profession Speed": 0,
+      "Profession XP": 1
+    },
+    "WC81": {
+      "Combat XP": 4,
+      "Dungeon": 1,
+      "Loot": 0,
+      "Profession Speed": 4,
+      "Profession XP": 2
+    },
+    "WC82": {
+      "Combat XP": 2,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC83": {
+      "Combat XP": 5,
+      "Dungeon": 0,
+      "Loot": 1,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC84": {
+      "Combat XP": 0,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC85": {
+      "Combat XP": 3,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 4,
+      "Profession XP": 3
+    },
+    "WC86": {
+      "Combat XP": 0,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 1
+    },
+    "WC87": {
+      "Combat XP": 1,
+      "Dungeon": 1,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 3
+    },
+    "WC88": {
+      "Combat XP": 0,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC89": {
+      "Combat XP": 0,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC90": {
+      "Combat XP": 3,
+      "Dungeon": 1,
+      "Loot": 0,
+      "Profession Speed": 4,
+      "Profession XP": 2
+    },
+    "WC91": {
+      "Combat XP": 1,
+      "Dungeon": 1,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC92": {
+      "Combat XP": 2,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC93": {
+      "Combat XP": 2,
+      "Dungeon": 1,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC94": {
+      "Combat XP": 1,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC95": {
+      "Combat XP": 4,
+      "Dungeon": 0,
+      "Loot": 4,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC96": {
+      "Combat XP": 1,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC97": {
+      "Combat XP": 0,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC98": {
+      "Combat XP": 1,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    },
+    "WC99": {
+      "Combat XP": 4,
+      "Dungeon": 0,
+      "Loot": 0,
+      "Profession Speed": 0,
+      "Profession XP": 0
+    }
+  }
+}

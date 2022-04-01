@@ -4,122 +4,92 @@ const path = require('path')
 const log = require('../../util/log.js')
 
 async function bindEvents (droid) {
-  log.log('[DROID] Binding events...')
+  await log.log('[DROID] Binding events...')
   // Modified from xMdb - https://github.com/xMdb/hypixel-guild-chat-bot/blob/2c01ff7c92cd6e7cce860835f9b64381a8335a1a/app.js#L92
-  const chatFolder = './chat'
-  const motdFolder = './motd'
-  const eventFolder = './protocol'
-  const debugFolder = './protocol/debug'
-  const chatEvents = fs.readdirSync(path.resolve(__dirname, chatFolder)).filter((file) => file.endsWith('.js'))
-  const motdEvents = fs.readdirSync(path.resolve(__dirname, motdFolder)).filter((file) => file.endsWith('.js'))
-  const otherEvents = fs.readdirSync(path.resolve(__dirname, eventFolder)).filter((file) => file.endsWith('.js'))
-  const debugEvents = fs.readdirSync(path.resolve(__dirname, debugFolder)).filter((file) => file.endsWith('.js'))
-  // Iterate through each file in the folder
-  for (const file of debugEvents) {
-    delete require.cache[require.resolve(`${debugFolder}/${file}`)]
-    const event = require(`${debugFolder}/${file}`)
-    if (event.enabled === false) continue
-    const listener = async function usbEventListenerDebug (...args) {
-      args.unshift(droid)
-      event.execute(...args)
-    }
+  const eventPath = './protocol'
+  const debugPath = './protocol/debug'
+  const otherFolder = fs.readdirSync(path.resolve(__dirname, eventPath)).filter((file) => file.endsWith('.js'))
+  const debugFolder = fs.readdirSync(path.resolve(__dirname, debugPath)).filter((file) => file.endsWith('.js'))
 
+  // Iterate through each file in the folder (droid._client.on('name'))
+  for (const file of debugFolder) {
+    delete require.cache[require.resolve(`${debugPath}/${file}`)]
+    const event = require(`${debugPath}/${file}`)
+    if (event.enabled === false) continue
+    const listener = async function wcaDroidEvents (...args) {
+      args.unshift(droid)
+      let value
+      try {
+        value = await event.execute(...args)
+      } catch (e) {
+        await log.error(e)
+        value = e
+      }
+      return value
+    }
     if (event.once === true) {
       droid._client.once(event.name, listener)
-      log.info(`[DROID] once | added debug listener <${event.name}> from ${file}`)
+      await log.info(`[DROID] once | added debug listener <${event.name}> from ${file}`)
     } else {
       droid._client.on(event.name, listener)
-      log.info(`[DROID] on   | added debug listener <${event.name}> from ${file}`)
+      await log.info(`[DROID] on   | added debug listener <${event.name}> from ${file}`)
     }
   }
 
-  for (const file of otherEvents) {
-    delete require.cache[require.resolve(`${eventFolder}/${file}`)]
-    const event = require(`${eventFolder}/${file}`)
+  // (droid.on('name'))
+  for (const file of otherFolder) {
+    delete require.cache[require.resolve(`${eventPath}/${file}`)]
+    const event = require(`${eventPath}/${file}`)
     if (event.enabled === false) continue
-    const listener = async function usbEventListenerOther (...args) {
+    const listener = async function wcaDroidEvents (...args) {
       args.unshift(droid)
-      event.execute(...args)
+      let value
+      try {
+        value = await event.execute(...args)
+      } catch (e) {
+        await log.error(e)
+        value = e
+      }
+      return value
     }
-
     if (event.once === true) {
       droid.once(event.name, listener)
-      log.info(`[DROID] once | added event listener <${event.name}> from ${file}`)
+      await log.info(`[DROID] once | added event listener <${event.name}> from ${file}`)
     } else {
       droid.on(event.name, listener)
-      log.info(`[DROID] on   | added event listener <${event.name}> from ${file}`)
+      await log.info(`[DROID] on   | added event listener <${event.name}> from ${file}`)
     }
   }
 
-  for (const file of chatEvents) {
-    /*
-      name: required (string)
-      regex: required (array)
-      execute: required (function)
-      once: optional (boolean) defaults to false
-      enabled: optional (boolean) defaults to true
-      parse: optional (boolean) defaults to true
-      matchAll: optional (boolean) defaults to false
-    */
-    // nothing can go wrong if everything is reloadable muhahahahaha
-    delete require.cache[require.resolve(`${chatFolder}/${file}`)]
-    // Require the file in the folder
-    const event = require(`${chatFolder}/${file}`)
-    if (event.enabled === false) continue
-    const listener = async function usbEventListenerChat (...args) {
-      args.unshift(droid)
-      event.execute(...args)
-    }
-    if (event.once === true) { // if once is true then only listen for the event once
-      droid.once(`chat:${event.name}`, listener)
-      log.info(`[DROID] once | added chat listener <${event.name}> from ${file}`)
-    } else { // else don't do that
-      droid.on(`chat:${event.name}`, listener)
-      log.info(`[DROID] on   | added chat listener <${event.name}> from ${file}`)
-    }
-
-    const chatOptions = {}
-    // By default return the groups and repeat it
-    chatOptions.parse = event.parse ? event.parse : true
-    chatOptions.repeat = !event.once ? !event.once : true
-    if (event.matchAll === true) {
-      droid.addChatPatternSet(`${event.name}`, event.regex, chatOptions)
-    } else {
-      for (const pattern of event.regex) {
-        droid.addChatPattern(`${event.name}`, pattern, chatOptions)
+  // (droid.on('wca:name'))
+  /*
+  for (const folder of wcaFolder) {
+    const files = fs.readdirSync(path.resolve(__dirname, `${wcaPath}/${folder}`)).filter((file) => file.endsWith('.js'))
+    for (const file of files) {
+      delete require.cache[require.resolve(`${wcaPath}/${folder}/${file}`)]
+      const event = require(`${wcaPath}/${folder}/${file}`)
+      if (event.enabled === false) continue
+      const listener = async function wcaDroidEvents (...args) {
+        args.unshift(droid)
+        let value
+        try {
+          value = await event.execute(...args)
+        } catch (e) {
+          await log.error(e)
+          value = e
+        }
+        return value
+      }
+      if (event.once === true) {
+        droid.once(`wca:${event.name}`, listener)
+        await log.info(`[DROID] once | added wca listener <${event.name}> from ${folder}/${file}`)
+      } else { // else don't do that
+        droid.on(`wca:${event.name}`, listener)
+        await log.info(`[DROID] on   | added wca listener <${event.name}> from ${folder}/${file}`)
       }
     }
-    log.info(`[DROID] name: <chat:${event.name} with parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}> regex: <${event.regex}>`)
   }
-
-  // exact same thing as above except for motd
-  for (const file of motdEvents) {
-    delete require.cache[require.resolve(`${motdFolder}/${file}`)]
-    const event = require(`${motdFolder}/${file}`)
-    if (event.enabled === false) continue
-    const listener = async function usbEventListenerMotd (...args) {
-      args.unshift(droid)
-      event.execute(...args)
-    }
-    if (event.once === true) {
-      droid.once(`motd:${event.name}`, listener)
-      log.info(`[DROID] once | added motd listener <${event.name}> from ${file}`)
-    } else { // else don't do that
-      droid.on(`motd:${event.name}`, listener)
-      log.info(`[DROID] on   | added motd listener <${event.name}> from ${file}`)
-    }
-
-    const chatOptions = {}
-    chatOptions.parse = event.parse ? event.parse : true
-    chatOptions.repeat = !event.once ? !event.once : true
-    if (event.matchAll === true) {
-      droid.addMotdPatternSet(`${event.name}`, event.regex, chatOptions)
-    } else {
-      for (const pattern of event.regex) {
-        droid.addMotdPattern(`${event.name}`, pattern, chatOptions)
-      }
-    }
-    log.info(`[DROID] name: <motd:${event.name} with parse: <${chatOptions.parse}> repeat: <${chatOptions.repeat}> regex: <${event.regex}>`)
-  }
+  */
+  await log.log('[DROID] Binded events.')
 }
 module.exports = { bindEvents }

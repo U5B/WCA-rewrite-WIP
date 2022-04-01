@@ -1,4 +1,4 @@
-const { client } = require('../../discord.js')
+const { discord } = require('../../discord.js')
 
 module.exports = {
   name: 'ping',
@@ -31,19 +31,19 @@ module.exports = {
   defaultPermission: false,
   permissions: [
     {
-      id: client.application.owner.id,
+      id: discord.application.owner.id,
       type: 'USER',
       permission: true
     }
   ],
   extra: {},
   async execute (client, interaction, args) {
-    if (interaction.options.getSubcommand() === 'me') {
-      interaction.followUp(`<@${client.user.id}>`)
-    } else if (interaction.options.getSubcommand() === 'you') {
-      interaction.followUp(`<@${interaction.user.id}> oh no oh lol`)
-    } else if (interaction.options.getSubcommand() === 'someone') {
-      const user = interaction.options.getMentionable('uwu')
+    if (await interaction.options.getSubcommand() === 'me') {
+      await interaction.followUp(`<@${client.user.id}>`)
+    } else if (await interaction.options.getSubcommand() === 'you') {
+      await interaction.followUp(`<@${interaction.user.id}> oh no oh lol`)
+    } else if (await interaction.options.getSubcommand() === 'someone') {
+      const user = await interaction.options.getMentionable('uwu')
       if (user) await interaction.followUp(`<@${user.id}> nowo lowo`)
     }
   }
