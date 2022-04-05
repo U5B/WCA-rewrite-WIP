@@ -12,6 +12,7 @@ const { discord } = require('../discord/discord.js')
 let previousOptions
 async function initDroid (start, options) {
   const config = await mongo.wca.fetchDroidOptions()
+  config.username = process.env.mcUsername // hotpatch to use multiple accounts
   if (!options) options = previousOptions
   options = await utils.compareObjects(options, config)
   const mineflayerOptions = options

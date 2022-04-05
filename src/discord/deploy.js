@@ -71,11 +71,21 @@ async function deploySlashCommands () {
   for (const guildId of guilds) {
     const fullPermissions = [] // why does this have to be per guild aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const guild = discord.guilds.cache.get(guildId)
-    await mongo.wca.fetchDiscordOptions(guild)
+    const mongoOptions = await mongo.wca.fetchDiscordOptions(guild)
     const guildCommands = await discord.application.commands.set(slashCommandsArray, guildId)
+    let adminRole
+    if (mongoOptions.roles?.admin) { // admin role (all permissions)
+      adminRole = {
+        id: mongoOptions.roles.admin,
+        type: 'ROLE',
+        permission: true
+      }
+    }
     for (const command of guildCommands.values()) {
       const data = await discord.wca.slashCommands.get(command.name)
       if (!data) return await discord.application.commands.delete(command.id, guildId)
+      // set the permissions
+      if (adminRole) data.permissions.push(adminRole)
       fullPermissions.push({ id: command.id, permissions: data.permissions })
     }
     await guild.commands.permissions.set({ fullPermissions })

@@ -3,21 +3,23 @@ process.env.DEBUG = 'log,chat,info,debug,error,verbose,warn'
 const fs = require('fs')
 const util = require('util')
 
+const logFolderPath = '../logs'
+if (!fs.existsSync(logFolderPath)) fs.mkdirSync(logFolderPath)
 let currentDay = new Date().toLocaleDateString().replace(/\//g, '_')
 const errorPath = {
-  prefix: '../logs/error_',
+  prefix: `${logFolderPath}/error_`,
   suffix: '.log'
 }
 const logPath = {
-  prefix: '../logs/log_',
+  prefix: `${logFolderPath}/log_`,
   suffix: '.log'
 }
 const debugPath = {
-  prefix: '../logs/debug_',
+  prefix: `${logFolderPath}/debug_`,
   suffix: '.log'
 }
 const chatPath = {
-  prefix: '../logs/chat_',
+  prefix: `${logFolderPath}/chat_`,
   suffix: '.log'
 }
 let file = fs.createWriteStream(`${logPath.prefix}${currentDay}${logPath.suffix}`, { flags: 'a' })
